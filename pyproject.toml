@@ -2,7 +2,7 @@
 name = "tira-lab"
 version = "0.1.0"
 description = ""
-authors = ["samvancart <sam02cart@gmail.com>"]
+authors = ["samvancart"]
 readme = "README.md"
 packages = [{include = "tira_lab"}]
 
