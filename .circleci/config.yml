@@ -7,7 +7,7 @@ jobs:
     steps:
       - checkout
       - python/install-packages:
-          pkg-manager: poetry 1.2.0
+          pkg-manager: poetry
       - run:
           command: |
             poetry run pytest src
