@@ -1,2 +1,7 @@
+# project helper files
 tabs.txt
 code.txt
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class

@@ -1,11 +1,21 @@
+from importlib.metadata import SelectableGroups
 import unittest
 from kpn import Kpn
 
 class TestKpn(unittest.TestCase):
     def setUp(self):
-        print('Set up')
+        self.kpn = Kpn()
 
     def test_get_reverse_polish(self):
-        my_kpn = Kpn()
-        self.assertEqual(my_kpn.get_reverse_polish('3+4*2/(1-5)^2^3'),
+        self.assertEqual(self.kpn.get_reverse_polish('3+4'),
+            ['3', '4', '+'])
+        self.assertEqual(self.kpn.get_reverse_polish('3+4*2'),
+            ['3', '4', '2', '*', '+'])
+        self.assertEqual(self.kpn.get_reverse_polish('3+4*2/2'),
+            ['3', '4', '2', '*', '2', '/', '+'])
+        self.assertEqual(self.kpn.get_reverse_polish('3+4*2/(1-5)^2^3'),
             ['3', '4', '2', '*', '1', '5', '-', '2', '3', '^', '^', '/', '+'])
+
+        
+        
+        
