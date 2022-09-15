@@ -1,4 +1,3 @@
-from importlib.metadata import SelectableGroups
 import unittest
 from kpn import Kpn
 
