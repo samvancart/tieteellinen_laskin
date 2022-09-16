@@ -10,9 +10,13 @@ jobs:
       - python/install-packages:
           pkg-manager: poetry
       - run:
+          name: Install coverage
+          command: |
+            poetry add coverage
+      - run:
           name: Run tests and get coverage
           command: |
-            poetry run pytest src
+            coverage run --branch -m pytest src
       - codecov/upload
           
 workflows:
