@@ -7,8 +7,6 @@ class Kpn:
         self.operators_dict = [{'value': z[0],'precedence':z[1],'associativity':z[2]} \
             for z in zip(self.operators,self.precedences,self.associativities)]
 
-        # self.output_stack = []
-        # self.operator_stack = []
         self.numbers = ['0','1','2','3','4','5','6','7','9']
 
 
@@ -30,6 +28,7 @@ class Kpn:
 
 
     def handle_operator(self, operator, output_stack, operator_stack):
+        """Helper function to handle operator token"""
         operator_gen = (o for o in self.operators_dict if o['value'] == operator)
         operator_dict = self.gen_to_dict(operator_gen)
         if len(operator_stack) == 0:
@@ -53,9 +52,11 @@ class Kpn:
         return self.operators_dict
 
     def get_reverse_polish(self, input):
+        """Return input string as reverse polish notation list"""
         return self.shunting_yard(input)
 
     def shunting_yard(self,input):
+        """Transform input string to reverse polish notation list"""
         output_stack = []
         operator_stack = []
         for token in input:
