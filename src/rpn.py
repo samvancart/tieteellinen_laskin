@@ -1,4 +1,6 @@
-class Kpn:
+import re
+
+class Rpn:
     def __init__(self):
         self.operators = ['+','-','*','/','^']
         self.precedences = [1,1,2,2,3]
@@ -36,15 +38,18 @@ class Kpn:
             return
 
         top_of_stack = self.get_top_of_stack(operator_stack)
-
-        while top_of_stack['value'] != '(' \
-        and (top_of_stack['precedence'] > operator_dict['precedence'] \
-        or (top_of_stack['precedence'] == operator_dict['precedence'] \
-        and operator_dict['associativity'] == 0)):
-            output_stack.append(top_of_stack['value'])
-            operator_stack.pop()
-            top_of_stack = self.get_top_of_stack(operator_stack)
-        operator_stack.append(operator_dict)
+        try:
+            while top_of_stack['value'] != '(' \
+            and (top_of_stack['precedence'] > operator_dict['precedence'] \
+            or (top_of_stack['precedence'] == operator_dict['precedence'] \
+            and operator_dict['associativity'] == 0)):
+                output_stack.append(top_of_stack['value'])
+                operator_stack.pop()
+                top_of_stack = self.get_top_of_stack(operator_stack)
+            operator_stack.append(operator_dict)
+        except KeyError:
+            print('Mismatched parenthesis!')
+            return
 
         return top_of_stack
 
@@ -52,11 +57,17 @@ class Kpn:
         return self.operators_dict
 
     def get_reverse_polish(self, input):
-        """Return input string as reverse polish notation list"""
+        """Return input string as reverse polish notation"""
+        if self.validate_input(input) == False: return None; 
         return self.shunting_yard(input)
 
+    def validate_input(self, input):
+        str = ''.join(re.findall(r"\(*[\+\-]*\d+\)*[\+\-\*\/\^]?", input))
+        if str == input: return True; 
+        return False
+
     def shunting_yard(self,input):
-        """Transform input string to reverse polish notation list"""
+        """Transform input string to reverse polish notation"""
         output_stack = []
         operator_stack = []
         for token in input:
@@ -68,27 +79,22 @@ class Kpn:
             elif token == '(':
                 operator_stack.append({'value':'(','precedence': 0,'associativity': 0})
             elif token == ')':
-                if not self.is_stack_empty(operator_stack):
-                    while top_of_stack['value'] != ')':
-                        if self.is_stack_empty(operator_stack):
-                            print('Error')
-                            return
-                        else:
-                            output_stack.append(top_of_stack['value'])
-                            operator_stack.pop()
-                            if self.is_stack_empty(operator_stack):
-                                print('Error')
-                                return
-                            else:
-                                top_of_stack = self.get_top_of_stack(operator_stack)
-                                if top_of_stack['value'] == '(':
-                                    operator_stack.pop()
-                                    break
-                else:
-                    print('Error')
+                try:
+                    while top_of_stack['value'] != '(':
+                        output_stack.append(top_of_stack['value'])
+                        operator_stack.pop()
+                        top_of_stack = self.get_top_of_stack(operator_stack)
+
+                    if top_of_stack['value'] == '(':
+                        operator_stack.pop()
+                except:
+                    print('Errors')
                     return
         while len(operator_stack) > 0:
             top_of_stack = self.get_top_of_stack(operator_stack)
+            if top_of_stack['value'] == '(':
+                print('Error')
+                return
             output_stack.append(top_of_stack['value'])
             operator_stack.pop()
 
@@ -96,8 +102,9 @@ class Kpn:
 
 def main():
     input = '3+4*2/(1-5)^2^3'
-    my_kpn = Kpn()
-    print(my_kpn.get_reverse_polish(input))
+    input1 = '((1)*)2'
+    my_rpn = Rpn()
+    print(my_rpn.get_reverse_polish(input1))
     
 if __name__ == "__main__":
     main()
