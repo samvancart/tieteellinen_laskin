@@ -1,5 +1,5 @@
 # Tieteellinen laskin
-### CI ja Testikattavuus
+### CI ja testikattavuus
 [![CircleCI](https://circleci.com/gh/samvancart/tieteellinen_laskin.svg?style=svg)](https://app.circleci.com/pipelines/gh/samvancart/tieteellinen_laskin)
 
 [![codecov](https://codecov.io/gh/samvancart/tieteellinen_laskin/branch/main/graph/badge.svg?token=969DQIMFTE)](https://codecov.io/gh/samvancart/tieteellinen_laskin)
