@@ -1,6 +1,7 @@
 version: '2.1'
 orbs:
   python: circleci/python@1.0.0
+  codecov: codecov/codecov@3.2.3
 jobs:
   build:
     executor: python/default
@@ -9,10 +10,13 @@ jobs:
       - python/install-packages:
           pkg-manager: poetry
       - run:
+          name: Run tests and get coverage
           command: |
             poetry run pytest src
-          name: Test it
+      - codecov/upload
+          
 workflows:
   main:
     jobs:
       - build
+          
