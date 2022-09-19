@@ -9,7 +9,8 @@ class Rpn:
         self.operators_dict = [{'value': z[0],'precedence':z[1],'associativity':z[2]} \
             for z in zip(self.operators,self.precedences,self.associativities)]
 
-        self.numbers = ['0','1','2','3','4','5','6','7','9']
+        self.numbers = ['0','1','2','3','4','5','6','7','9', 'pi']
+        self.functions = ['sin', 'cos', 'tan', 'sqrt', 'min', 'max']
 
 
     def is_stack_empty(self,stack):
@@ -55,16 +56,43 @@ class Rpn:
 
     def get_operators_dict(self):
         return self.operators_dict
+    
+    def get_regex_list(self):
+        """Return a list of regular expressions for validating input"""
+        operator_after_right_parenthesis = r"[\)]+\d+"
+        two_operators = r"[\+\-\*\/\^]+[\*\/\^]]*"
+        return [operator_after_right_parenthesis, two_operators]
 
     def get_reverse_polish(self, input):
         """Return input string as reverse polish notation"""
-        if self.validate_input(input) == False: return None; 
-        return self.shunting_yard(input)
+        if self.validate_input(self.get_regex_list(), input) == False: return None
+        input_list = self.str_input_to_list(input)
+        return self.shunting_yard(input_list)
 
-    def validate_input(self, input):
-        str = ''.join(re.findall(r"\(*[\+\-]*\d+\)*[\+\-\*\/\^]?", input))
-        if str == input: return True; 
-        return False
+    def validate_input(self, regex_list, input):
+        for regex in regex_list:
+            str = re.findall(regex, input)
+            if str != []: return False
+        return True
+
+    def str_input_to_list(self,input):
+        if input == '': return []
+        token_list = []
+        start = 0
+        for i in range(0,len(input)):
+            c = input[i]
+            end = i
+            if c in self.operators or c == '(' or c == ')' or c == ',':
+                operator = input[i]
+                token =  input[start:end]
+                if token != '':
+                    token_list.append(token)
+                token_list.append(operator)
+                start = end+1
+            elif i == len(input)-1:
+                token =  input[start:len(input)]
+                token_list.append(token)
+        return token_list
 
     def shunting_yard(self,input):
         """Transform input string to reverse polish notation"""
@@ -74,6 +102,8 @@ class Rpn:
             top_of_stack = self.get_top_of_stack(operator_stack)
             if token in self.numbers:
                 output_stack.append(token)
+            elif token in self.functions:
+                operator_stack.append({'value': token, 'precedence': -1,'associativity': 0})
             elif token in self.operators:
                 self.handle_operator(token, output_stack, operator_stack)
             elif token == '(':
@@ -87,6 +117,11 @@ class Rpn:
 
                     if top_of_stack['value'] == '(':
                         operator_stack.pop()
+                    if operator_stack != []:
+                        top_of_stack = self.get_top_of_stack(operator_stack)
+                        if top_of_stack['value'] in self.functions:
+                            output_stack.append(top_of_stack['value'])
+                            operator_stack.pop()
                 except:
                     print('Errors')
                     return
@@ -102,9 +137,14 @@ class Rpn:
 
 def main():
     input = '3+4*2/(1-5)^2^3'
-    input1 = '((1)*)2'
+    input1 = '((1)*2)'
+    input3 = 'sin(max(2,3)/3*pi)'
+    input4 = '(3+4)'
+    input2 = '++3--+4'
+    list_input1 = ['3','+','4']
     my_rpn = Rpn()
-    print(my_rpn.get_reverse_polish(input1))
+    # print(my_rpn.str_input_to_list(input2))
+    print(my_rpn.get_reverse_polish(input4))
     
 if __name__ == "__main__":
     main()
