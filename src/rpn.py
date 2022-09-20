@@ -18,16 +18,15 @@ class Rpn:
 
 
     def gen_to_dict(self,gen):
-        dict = {}
-        for x in gen:
-            dict = x
-        return dict
+        dictionary = {}
+        for dict_object in gen:
+            dictionary = dict_object
+        return dictionary
 
     def get_top_of_stack(self,stack):
         if len(stack)==0:
             return {}
-        else:
-            return stack[len(stack)-1]
+        return stack[len(stack)-1]
 
 
     def handle_operator(self, operator, output_stack, operator_stack):
@@ -36,7 +35,8 @@ class Rpn:
         operator_dict = self.gen_to_dict(operator_gen)
         if len(operator_stack) == 0:
             operator_stack.append(operator_dict)
-            return
+            top_of_stack = self.get_top_of_stack(operator_stack)
+            return operator_stack
 
         top_of_stack = self.get_top_of_stack(operator_stack)
         try:
@@ -50,55 +50,60 @@ class Rpn:
             operator_stack.append(operator_dict)
         except KeyError:
             print('Mismatched parenthesis!')
-            return
 
         return top_of_stack
 
     def get_operators_dict(self):
         return self.operators_dict
-    
+
     def get_regex_list(self):
         """Return a list of regular expressions for validating input"""
-        operator_after_right_parenthesis = r"[\)]+\d+"
+        no_operator_after_right_parenthesis = r"[\)]+\d+"
         two_operators = r"[\+\-\*\/\^]+[\*\/\^]]*"
-        return [operator_after_right_parenthesis, two_operators]
+        return [no_operator_after_right_parenthesis, two_operators]
 
-    def get_reverse_polish(self, input):
+    def get_reverse_polish(self, str_input):
         """Return input string as reverse polish notation"""
-        if self.validate_input(self.get_regex_list(), input) == False: return None
-        input_list = self.str_input_to_list(input)
+        if not self.validate_input(self.get_regex_list(), str_input):
+            return None
+        input_list = self.str_input_to_list(str_input)
         return self.shunting_yard(input_list)
 
-    def validate_input(self, regex_list, input):
+    def validate_input(self, regex_list, str_input):
         for regex in regex_list:
-            str = re.findall(regex, input)
-            if str != []: return False
+            string = re.findall(regex, str_input)
+            if string != []:
+                return False
         return True
 
-    def str_input_to_list(self,input):
-        if input == '': return []
+    def str_input_to_list(self,str_input):
+        if str_input == '':
+            return []
         token_list = []
         start = 0
-        for i in range(0,len(input)):
-            c = input[i]
+        for i in range(0,len(str_input)):
+            character = str_input[i]
             end = i
-            if c in self.operators or c == '(' or c == ')' or c == ',':
-                operator = input[i]
-                token =  input[start:end]
+            if character in self.operators \
+            or character == '(' \
+            or character == ')' \
+            or character == ',':
+                operator = str_input[i]
+                token =  str_input[start:end]
                 if token != '':
                     token_list.append(token)
                 token_list.append(operator)
                 start = end+1
-            elif i == len(input)-1:
-                token =  input[start:len(input)]
+            elif i == len(str_input)-1:
+                token =  str_input[start:len(str_input)]
                 token_list.append(token)
         return token_list
 
-    def shunting_yard(self,input):
+    def shunting_yard(self,str_input):
         """Transform input string to reverse polish notation"""
         output_stack = []
         operator_stack = []
-        for token in input:
+        for token in str_input:
             top_of_stack = self.get_top_of_stack(operator_stack)
             if token in self.numbers:
                 output_stack.append(token)
@@ -117,19 +122,19 @@ class Rpn:
 
                     if top_of_stack['value'] == '(':
                         operator_stack.pop()
-                    if operator_stack != []:
+                    if operator_stack:
                         top_of_stack = self.get_top_of_stack(operator_stack)
                         if top_of_stack['value'] in self.functions:
                             output_stack.append(top_of_stack['value'])
                             operator_stack.pop()
-                except:
+                except KeyError:
                     print('Errors')
-                    return
+                    return None
         while len(operator_stack) > 0:
             top_of_stack = self.get_top_of_stack(operator_stack)
             if top_of_stack['value'] == '(':
                 print('Error')
-                return
+                return None
             output_stack.append(top_of_stack['value'])
             operator_stack.pop()
 
@@ -145,6 +150,6 @@ def main():
     my_rpn = Rpn()
     # print(my_rpn.str_input_to_list(input2))
     print(my_rpn.get_reverse_polish(input4))
-    
+
 if __name__ == "__main__":
     main()
