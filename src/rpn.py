@@ -1,6 +1,7 @@
 import re
 
 class Rpn:
+    """Class to transform a mathematical expression into Reverse Polish Notation."""
     def __init__(self):
         self.operators = ['+','-','*','/','^']
         self.precedences = [1,1,2,2,3]
@@ -30,7 +31,16 @@ class Rpn:
 
 
     def handle_operator(self, operator, output_stack, operator_stack):
-        """Helper function to handle operator token"""
+        """Helper method that handles the str_input token when it is an operator (+,-,*, etc).
+        
+        Args:
+            operator: The operator to be handled.
+            output_stack: The output_stack in its current state.
+            operator_stack: The operator_stack in its current state.
+
+            Returns:
+                New operator_stack state if operator_stack was empty, else top of the operator_stack. 
+        """
         operator_gen = (o for o in self.operators_dict if o['value'] == operator)
         operator_dict = self.gen_to_dict(operator_gen)
         if len(operator_stack) == 0:
@@ -57,13 +67,22 @@ class Rpn:
         return self.operators_dict
 
     def get_regex_list(self):
-        """Return a list of regular expressions for validating input"""
+        """Input validation.
+        
+        Returns: List of regular expressions for validating input.
+        """
         no_operator_after_right_parenthesis = r"[\)]+\d+"
         two_operators = r"[\+\-\*\/\^]+[\*\/\^]]*"
         return [no_operator_after_right_parenthesis, two_operators]
 
     def get_reverse_polish(self, str_input):
-        """Return input string as reverse polish notation"""
+        """Validates input and calls shunting_yard method.
+
+        Args:
+            str_input: The input string.
+
+        Returns: String, return value of shunting_yard method or None if validations fail.
+        """
         if not self.validate_input(self.get_regex_list(), str_input):
             return None
         input_list = self.str_input_to_list(str_input)
@@ -100,7 +119,15 @@ class Rpn:
         return token_list
 
     def shunting_yard(self,str_input):
-        """Transform input string to reverse polish notation"""
+        """Main method to transform input string into reverse polish notation.
+        
+        Args:
+            str_input: The mathematical expression as a string.
+
+        Returns:
+            String, the mathematical expression in Reverse Polish Notation, None if there are errors.
+        
+        """
         output_stack = []
         operator_stack = []
         for token in str_input:

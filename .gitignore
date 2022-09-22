@@ -1,6 +1,7 @@
 # Project helper files
 tabs.txt
 code.txt
+htmlcov
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

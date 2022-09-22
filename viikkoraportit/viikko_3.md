@@ -1,0 +1,3 @@
+### Viikko 3
+**Käytetty aika:** 20h  
+Olen saanut käänteisen puolalaisen notaation palauttavan `Rpn`-luokan valmiiksi ja tehnyt sille testit, sekä kirjoittanut *docstringit*. Olen myös aloittanut GUI:n tekemistä *Tkinter*-kirjastolla, mikä on kyseisellä kirjastolla minulle uusi kokemus. Projektissa on nyt myös *pylint* käytössä koodin laadun tarkkailua varten. Lisäksi olen alkanut kirjoittaa testausdokumenttia. Seuraavaksi aion jatkaa UI:n työstämistä ja aloittaa laskimen toiminnan koodausta.
