@@ -1,38 +1,49 @@
 import re
 
+
 class Rpn:
     """Class to transform a mathematical expression into Reverse Polish Notation."""
+
     def __init__(self):
-        self.operators = ['+','-','*','/','^']
-        self.precedences = [1,1,2,2,3]
-        self.associativities = [0,0,0,0,1]
+        self.operators = ['+', '-', '*', '/', '^']
+        self.precedences = [1, 1, 2, 2, 3]
+        self.associativities = [0, 0, 0, 0, 1]
 
-        self.operators_dict = [{'value': z[0],'precedence':z[1],'associativity':z[2]} \
-            for z in zip(self.operators,self.precedences,self.associativities)]
+        self.operators_dict = [{'value': z[0], 'precedence':z[1], 'associativity':z[2]}
+                               for z in zip(self.operators, self.precedences, self.associativities)]
 
-        self.numbers = ['0','1','2','3','4','5','6','7','9', 'pi']
+        self.numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '9', 'pi']
         self.functions = ['sin', 'cos', 'tan', 'sqrt', 'min', 'max']
 
+    def get_numbers(self):
+        return self.numbers
 
-    def is_stack_empty(self,stack):
+    def get_operators(self):
+        return self.operators
+
+    def get_functions(self):
+        return self.functions
+
+    def get_operators_dict(self):
+        return self.operators_dict
+
+    def is_stack_empty(self, stack):
         return len(stack) == 0
 
-
-    def gen_to_dict(self,gen):
+    def gen_to_dict(self, gen):
         dictionary = {}
         for dict_object in gen:
             dictionary = dict_object
         return dictionary
 
-    def get_top_of_stack(self,stack):
-        if len(stack)==0:
+    def get_top_of_stack(self, stack):
+        if len(stack) == 0:
             return {}
         return stack[len(stack)-1]
 
-
     def handle_operator(self, operator, output_stack, operator_stack):
         """Helper method that handles the str_input token when it is an operator (+,-,*, etc).
-        
+
         Args:
             operator: The operator to be handled.
             output_stack: The output_stack in its current state.
@@ -41,7 +52,8 @@ class Rpn:
             Returns:
                 New operator_stack state if operator_stack was empty, else top of the operator_stack. 
         """
-        operator_gen = (o for o in self.operators_dict if o['value'] == operator)
+        operator_gen = (
+            o for o in self.operators_dict if o['value'] == operator)
         operator_dict = self.gen_to_dict(operator_gen)
         if len(operator_stack) == 0:
             operator_stack.append(operator_dict)
@@ -51,9 +63,9 @@ class Rpn:
         top_of_stack = self.get_top_of_stack(operator_stack)
         try:
             while top_of_stack['value'] != '(' \
-            and (top_of_stack['precedence'] > operator_dict['precedence'] \
-            or (top_of_stack['precedence'] == operator_dict['precedence'] \
-            and operator_dict['associativity'] == 0)):
+                and (top_of_stack['precedence'] > operator_dict['precedence']
+                     or (top_of_stack['precedence'] == operator_dict['precedence']
+                     and operator_dict['associativity'] == 0)):
                 output_stack.append(top_of_stack['value'])
                 operator_stack.pop()
                 top_of_stack = self.get_top_of_stack(operator_stack)
@@ -68,7 +80,7 @@ class Rpn:
 
     def get_regex_list(self):
         """Input validation.
-        
+
         Returns: List of regular expressions for validating input.
         """
         no_operator_after_right_parenthesis = r"[\)]+\d+"
@@ -95,51 +107,95 @@ class Rpn:
                 return False
         return True
 
-    def str_input_to_list(self,str_input):
+    def is_number(self, token):
+        if token == 'pi':
+            return True
+        for character in token:
+            if character in self.numbers:
+                return True
+        return False
+
+    def clean_input(self, input_list):
+        cleaned_list = []
+        parenthesis_stack = []
+        minuses_even = True
+        i = 0
+        while i < len(input_list):
+            token = input_list[i]
+            if token == '-' or token == '+':
+                if token == '-':
+                    minuses_even = False
+                j = i+1
+                while j < len(input_list):
+                    if self.is_number(input_list[j]):
+                        if minuses_even:
+                            cleaned_list.append('+')
+                        else:
+                            cleaned_list.append('-')
+                        if parenthesis_stack:
+                            for p in parenthesis_stack:
+                                cleaned_list.append(p)
+                            parenthesis_stack = []
+                        i = (j-1)
+                        break
+                    elif input_list[j] == '-':
+                        minuses_even = not minuses_even
+                    elif input_list[j] == '(':
+                        parenthesis_stack.append(input_list[j])
+                    j += 1
+            else:
+                cleaned_list.append(token)
+            i += 1
+        return cleaned_list
+
+    def str_input_to_list(self, str_input):
         if str_input == '':
             return []
         token_list = []
         start = 0
-        for i in range(0,len(str_input)):
+        for i in range(0, len(str_input)):
             character = str_input[i]
             end = i
             if character in self.operators \
-            or character == '(' \
-            or character == ')' \
-            or character == ',':
+                    or character == '(' \
+                    or character == ')' \
+                    or character == ',':
                 operator = str_input[i]
-                token =  str_input[start:end]
+                token = str_input[start:end]
                 if token != '':
                     token_list.append(token)
                 token_list.append(operator)
                 start = end+1
             elif i == len(str_input)-1:
-                token =  str_input[start:len(str_input)]
+                token = str_input[start:len(str_input)]
                 token_list.append(token)
         return token_list
 
-    def shunting_yard(self,str_input):
-        """Main method to transform input string into reverse polish notation.
-        
+    def shunting_yard(self, input_list):
+        """Main method to transform input list into reverse polish notation.
+
         Args:
-            str_input: The mathematical expression as a string.
+            str_input: List, the mathematical expression.
 
         Returns:
-            String, the mathematical expression in Reverse Polish Notation, None if there are errors.
-        
+            List, the mathematical expression in Reverse Polish Notation, None if there are errors.
+
         """
         output_stack = []
         operator_stack = []
-        for token in str_input:
+        input_list = self.clean_input(input_list)
+        for token in input_list:
             top_of_stack = self.get_top_of_stack(operator_stack)
-            if token in self.numbers:
+            if self.is_number(token):
                 output_stack.append(token)
             elif token in self.functions:
-                operator_stack.append({'value': token, 'precedence': -1,'associativity': 0})
+                operator_stack.append(
+                    {'value': token, 'precedence': -1, 'associativity': 0})
             elif token in self.operators:
                 self.handle_operator(token, output_stack, operator_stack)
             elif token == '(':
-                operator_stack.append({'value':'(','precedence': 0,'associativity': 0})
+                operator_stack.append(
+                    {'value': '(', 'precedence': 0, 'associativity': 0})
             elif token == ')':
                 try:
                     while top_of_stack['value'] != '(':
@@ -166,17 +222,3 @@ class Rpn:
             operator_stack.pop()
 
         return output_stack
-
-def main():
-    input = '3+4*2/(1-5)^2^3'
-    input1 = '((1)*2)'
-    input3 = 'sin(max(2,3)/3*pi)'
-    input4 = '(3+4)'
-    input2 = '++3--+4'
-    list_input1 = ['3','+','4']
-    my_rpn = Rpn()
-    # print(my_rpn.str_input_to_list(input2))
-    print(my_rpn.get_reverse_polish(input4))
-
-if __name__ == "__main__":
-    main()
