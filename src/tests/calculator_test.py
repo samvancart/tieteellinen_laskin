@@ -13,4 +13,7 @@ class TestCalculator(unittest.TestCase):
                          '11')
         self.assertEqual(self.calculator.calculate('3-(-12)'),
                          '15')
+        self.assertEqual(self.calculator.calculate('3--12'),
+        '15')
+
     

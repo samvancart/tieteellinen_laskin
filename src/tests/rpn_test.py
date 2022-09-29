@@ -31,6 +31,8 @@ class TestRpn(unittest.TestCase):
                          ['3', '4', '+'])
         self.assertEqual(self.rpn.get_reverse_polish('(3+4)'),
                          ['3', '4', '+'])
+        self.assertEqual(self.rpn.get_reverse_polish('++3--+4'),
+                         ['3', '4', '+'])
         self.assertEqual(self.rpn.get_reverse_polish('3+4*2'),
                          ['3', '4', '2', '*', '+'])
         self.assertEqual(self.rpn.get_reverse_polish('3+4*2/2'),
@@ -49,22 +51,21 @@ class TestRpn(unittest.TestCase):
         self.assertEqual(self.rpn.get_reverse_polish('3'),
                          ['3'])
         self.assertEqual(self.rpn.get_reverse_polish('-3'),
-                         ['3', '-'])
+                         ['-3',])
         self.assertEqual(self.rpn.get_reverse_polish('3-(-12)'),
-                         ['3', '12', '+',])
+                         ['3', '-12', '-', ])
         self.assertEqual(self.rpn.get_reverse_polish('20*30'),
                          ['20', '30', '*'])
+        self.assertEqual(self.rpn.get_reverse_polish('3-(-5-5)'),
+                         ['3', '-5', '5', '-', '-'])
 
-        # Make method clean_input for special case
-        # self.assertEqual(self.kpn.get_reverse_polish('+++1'),
-        #     ['1'])
-        # Check if needs to throw syntax error for empty parenthesis
         self.assertEqual(self.rpn.get_reverse_polish('()'),
                          [])
         self.assertEqual(self.rpn.get_reverse_polish('((()))'),
                          [])
 
-        """Test for mismatched parenthesis"""
+        self.assertEqual(self.rpn.get_reverse_polish('3-(-5(-5))'),
+                         None)
         self.assertEqual(self.rpn.get_reverse_polish('(3+4'),
                          None)
         self.assertEqual(self.rpn.get_reverse_polish('3+4)'),
@@ -79,25 +80,3 @@ class TestRpn(unittest.TestCase):
                          None)
         self.assertEqual(self.rpn.get_reverse_polish('(()'),
                          None)
-
-    def test_str_input_to_list(self):
-        self.assertEqual(self.rpn.str_input_to_list('3+4'),
-                         ['3', '+', '4'])
-        self.assertEqual(self.rpn.str_input_to_list('3564562+445*6+sin(40)'),
-                         ['3564562', '+', '445', '*', '6', '+', 'sin', '(', '40', ')'])
-        self.assertEqual(self.rpn.str_input_to_list('++3--+4'),
-                         ['+', '+', '3', '-', '-', '+', '4'])
-        self.assertEqual(self.rpn.str_input_to_list('(3+(4))'),
-                         ['(', '3', '+', '(', '4', ')', ')'])
-        self.assertEqual(self.rpn.str_input_to_list('20*30'),
-                         ['20', '*', '30'])
-        self.assertEqual(self.rpn.str_input_to_list('3-(-12)'),
-                         ['3', '-', '(', '-', '12', ')'])
-
-    def test_clean_input(self):
-        self.assertEqual(self.rpn.clean_input(['3', '+', '-', '4']),
-                         ['3', '-', '4'])
-        self.assertEqual(self.rpn.clean_input(['3', '-', '-', '4']),
-                         ['3', '+', '4'])
-        self.assertEqual(self.rpn.clean_input(['3', '-', '(', '-', '12', ')']),
-                         ['3', '+', '(', '12', ')'])

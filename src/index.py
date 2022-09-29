@@ -6,13 +6,16 @@ def main():
     input1 = '((1)*2)'
     input3 = 'sin(max(2,3)/3*pi)'
     input4 = '(3+4)'
-    input5 = '3+4*2'
+    input5 = '3-(-50-5)'
+    input6 = '3-(-5(-5))'
     input2 = '++3--+4'
     list_input1 = ['3','+','4']
     my_rpn = Rpn()
+
     # print(my_rpn.str_input_to_list(input2))
     # print(my_rpn.get_reverse_polish(input4))
-    print(my_rpn.get_reverse_polish(input5))
-    print(calculator.calculate(input5))
+    # print(my_rpn.get_reverse_polish(input5))
+    # print(calculator.calculate(input5))
+    print(my_rpn.get_reverse_polish(input6))
 if __name__ == "__main__":
     main()
