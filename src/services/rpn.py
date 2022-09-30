@@ -1,12 +1,8 @@
-
-
-
-from input_handler import Input_handler
+from services.input_handler import InputHandler
 
 
 class Rpn:
     """Class to transform a mathematical expression into Reverse Polish Notation."""
-
     def __init__(self):
         self.operators = ['+', '-', '*', '/', '^']
         self.precedences = [1, 1, 2, 2, 3]
@@ -18,7 +14,7 @@ class Rpn:
         self.numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '9', 'pi']
         self.functions = ['sin', 'cos', 'tan', 'sqrt', 'min', 'max']
 
-        self.input_handler = Input_handler()
+        self.input_handler = InputHandler()
 
     def get_numbers(self):
         return self.numbers
@@ -96,13 +92,13 @@ class Rpn:
                             output_stack.append(top_of_stack['value'])
                             operator_stack.pop()
                 except KeyError:
-                    print('Errors')
-                    return None
+                    # print('Errors')
+                    return ['error']
         while len(operator_stack) > 0:
             top_of_stack = self.get_top_of_stack(operator_stack)
             if top_of_stack['value'] == '(':
-                print('Error')
-                return None
+                # print('Error')
+                return ['error']
             output_stack.append(top_of_stack['value'])
             operator_stack.pop()
 
@@ -140,7 +136,6 @@ class Rpn:
             operator_stack.append(operator_dict)
         except KeyError:
             print('Mismatched parenthesis!')
+            return ['error']
 
         return top_of_stack
-
-    

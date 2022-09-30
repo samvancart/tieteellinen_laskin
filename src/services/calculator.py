@@ -1,20 +1,19 @@
-from input_handler import Input_handler
-import rpn
-import input_handler
+from services.rpn import Rpn
+from services.input_handler import InputHandler
 
 
 class Calculator:
     """Class for calculating mathematical expressions given in Reverse Polish Notation."""
 
     def __init__(self):
-        self.rpn = rpn.Rpn()
-        self.input_handler = input_handler.Input_handler()
+        self.rpn = Rpn()
+        self.input_handler = InputHandler()
         self.operations = {
             '+': lambda x, y: x+y,
             '-': lambda x, y: x-y,
             '*': lambda x, y: x*y,
             '/': lambda x, y: x/y,
-            '^': lambda x, y: x^y
+            '^': lambda x, y: x**y
         }
 
 
@@ -22,17 +21,19 @@ class Calculator:
         if len(stack) == 0:
             return None
         if len(stack)==1:
-            operations_y = int(stack[-1])
+            operations_y = float(stack[-1])
             operations_x = 0
             stack.pop()
         else:
-            print(stack)
-            operations_y = int(stack[-1])
+            operations_y = float(stack[-1])
             stack.pop()
-            operations_x = int(stack[-1])
+            operations_x = float(stack[-1])
             stack.pop()
-        result = self.operations[operator](operations_x,operations_y)
-        stack.append(str(result))
+        try:
+            result = self.operations[operator](operations_x,operations_y)
+            stack.append(str(result))
+        except:
+            stack.append('error')
         return stack
 
     def get_rpn_list(self, str_input):
@@ -40,13 +41,17 @@ class Calculator:
 
     def calculate(self, str_input):
         rpn_list = self.get_rpn_list(str_input)
+        if not rpn_list:
+            return ['error']
         stack = []
         operators = self.rpn.get_operators()
-        functions = self.rpn.get_functions()
+        # functions = self.rpn.get_functions()
 
         for token in rpn_list:
             if self.input_handler.is_number(token):
                 stack.append(token)
             elif token in operators:
                 stack = self.handle_operator(stack, token)
+        if not stack:
+            return ['error']
         return stack[0]

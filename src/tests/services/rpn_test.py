@@ -1,5 +1,5 @@
 import unittest
-from rpn import Rpn
+from services.rpn import Rpn
 
 
 class TestRpn(unittest.TestCase):
@@ -41,13 +41,8 @@ class TestRpn(unittest.TestCase):
                          ['3', '4', '2', '*', '1', '5', '-', '2', '3', '^', '^', '/', '+'])
         self.assertEqual(self.rpn.get_reverse_polish('((1)*2)'),
                          ['1', '2', '*'])
-        self.assertEqual(self.rpn.get_reverse_polish('((1)*)2'),
-                         None)
-        self.assertEqual(self.rpn.get_reverse_polish('1**2'),
-                         None)
         self.assertEqual(self.rpn.get_reverse_polish('sin(max(2,3)/3*pi)'),
                          ['2', '3', 'max', '3', '/', 'pi', '*', 'sin'])
-
         self.assertEqual(self.rpn.get_reverse_polish('3'),
                          ['3'])
         self.assertEqual(self.rpn.get_reverse_polish('-3'),
@@ -58,25 +53,31 @@ class TestRpn(unittest.TestCase):
                          ['20', '30', '*'])
         self.assertEqual(self.rpn.get_reverse_polish('3-(-5-5)'),
                          ['3', '-5', '5', '-', '-'])
-
         self.assertEqual(self.rpn.get_reverse_polish('()'),
                          [])
         self.assertEqual(self.rpn.get_reverse_polish('((()))'),
                          [])
 
+         # Errors found at validation
+        self.assertEqual(self.rpn.get_reverse_polish('((1)*)2'),
+                         None)
+        self.assertEqual(self.rpn.get_reverse_polish('1**2'),
+                         None)
         self.assertEqual(self.rpn.get_reverse_polish('3-(-5(-5))'),
-                         None)
-        self.assertEqual(self.rpn.get_reverse_polish('(3+4'),
-                         None)
-        self.assertEqual(self.rpn.get_reverse_polish('3+4)'),
-                         None)
-        self.assertEqual(self.rpn.get_reverse_polish('3+4*2/1-5)^2)^3'),
-                         None)
-        self.assertEqual(self.rpn.get_reverse_polish('3+4*2/(1-5^2^3'),
                          None)
         self.assertEqual(self.rpn.get_reverse_polish('3+4*2/(1-5(^2^3'),
                          None)
+
+        # Errors found at shunting_yard
+        self.assertEqual(self.rpn.get_reverse_polish('(3+4'),
+                         ['error'])
+        self.assertEqual(self.rpn.get_reverse_polish('3+4)'),
+                         ['error'])
+        self.assertEqual(self.rpn.get_reverse_polish('3+4*2/1-5)^2)^3'),
+                        ['error'])
+        self.assertEqual(self.rpn.get_reverse_polish('3+4*2/(1-5^2^3'),
+                         ['error'])
         self.assertEqual(self.rpn.get_reverse_polish('())'),
-                         None)
+                         ['error'])
         self.assertEqual(self.rpn.get_reverse_polish('(()'),
-                         None)
+                         ['error'])

@@ -1,10 +1,10 @@
 import unittest
-from input_handler import Input_handler
+from services.input_handler import InputHandler
 
 
-class TestInput_handler(unittest.TestCase):
+class TestInputHandler(unittest.TestCase):
         def setUp(self):
-                self.input_handler = Input_handler()
+                self.input_handler = InputHandler()
 
 
         def test_str_input_to_list(self):
@@ -22,6 +22,10 @@ class TestInput_handler(unittest.TestCase):
                                 ['20', '*', '30'])
                 self.assertEqual(self.input_handler.str_input_to_list('3-(-12)'),
                                 ['3', '-', '(', '-12', ')'])
+                self.assertEqual(self.input_handler.str_input_to_list('3.2-(-12.52)'),
+                                ['3.2', '-', '(', '-12.52', ')'])
+                self.assertEqual(self.input_handler.str_input_to_list('-3.2-(12.52)'),
+                                ['-3.2', '-', '(', '12.52', ')'])
         def test_is_number(self):
                 self.assertEqual(self.input_handler.is_number('-12'),
                                 True)

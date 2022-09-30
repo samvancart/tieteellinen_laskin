@@ -1,5 +1,5 @@
 import unittest
-from calculator import Calculator
+from services.calculator import Calculator
 
 
 class TestCalculator(unittest.TestCase):
@@ -8,12 +8,15 @@ class TestCalculator(unittest.TestCase):
 
     def test_calculate(self):
         self.assertEqual(self.calculator.calculate('3+4'),
-                         '7')
+                         '7.0')
         self.assertEqual(self.calculator.calculate('3+4*2'),
-                         '11')
+                         '11.0')
         self.assertEqual(self.calculator.calculate('3-(-12)'),
-                         '15')
+                         '15.0')
         self.assertEqual(self.calculator.calculate('3--12'),
-        '15')
+        '15.0')
+        self.assertEqual(self.calculator.calculate('2^4'),
+        '16.0')
+        
 
     

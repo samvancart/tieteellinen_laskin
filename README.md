@@ -10,3 +10,26 @@
 [viikko_1](https://github.com/samvancart/tieteellinen_laskin/blob/main/viikkoraportit/viikko_1.md)  
 [viikko_2](https://github.com/samvancart/tieteellinen_laskin/blob/main/viikkoraportit/viikko_2.md)  
 [viikko_3](https://github.com/samvancart/tieteellinen_laskin/blob/main/viikkoraportit/viikko_3.md)  
+## Ohjelman asennus
+### Riippuvuuksien asennus
+`poetry install`
+
+### Ohjelman suorittaminen
+
+`poetry run invoke start`
+
+### Testien suorittaminen
+
+`poetry run invoke test`
+
+### Testikattavuusraportti
+
+`poetry run invoke coverage-report`
+
+Generoitu raportti löytyy _htmlcov_-hakemistosta.
+
+### Pylint
+
+Tiedoston [.pylintrc](./.pylintrc) määrittelemät tarkistukset suoritetaan komennolla:
+
+`poetry run invoke lint`

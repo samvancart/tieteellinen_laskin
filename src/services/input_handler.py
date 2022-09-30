@@ -1,9 +1,9 @@
 import re
 
-class Input_handler:
+
+class InputHandler:
     def __init__(self):
         self.numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '9', 'pi']
-    
 
     def get_regex_list(self):
         """Input validation.
@@ -13,9 +13,14 @@ class Input_handler:
         no_operator_after_right_parenthesis = r"[\)]+\d+"
         no_operator_before_left_parenthesis = r"\d+\(+"
         two_operators = r"[\+\-\*\/\^]+[\*\/\^]]*"
-        return [no_operator_after_right_parenthesis,no_operator_before_left_parenthesis, two_operators]
-
-    
+        more_than_one_decimal_point = r"\.+\.+"
+        error = r"error"
+        return [no_operator_after_right_parenthesis,
+                no_operator_before_left_parenthesis,
+                two_operators,
+                more_than_one_decimal_point,
+                error
+                ]
 
     def validate_input(self, regex_list, str_input):
         for regex in regex_list:
@@ -32,10 +37,9 @@ class Input_handler:
                 return True
         return False
 
- 
     def trim_matches_list(self, reference_list, list_to_clean, index):
         """Remove unwanted overlapping matches from list
-        
+
         Args:
             reference_list: The higher hierarchy list to compare to.
             list_to_clean: The list that will have unwanted matches removed.
@@ -46,9 +50,9 @@ class Input_handler:
         if not reference_list:
             return list_to_clean
         trimmed_list = []
-        positions_list=[]
+        positions_list = []
         for ref_item in reference_list:
-            for item_index,item in enumerate(list_to_clean):
+            for item_index, item in enumerate(list_to_clean):
                 if ref_item[index] == item[index]:
                     positions_list.append(item_index)
         for item_index, item in enumerate(list_to_clean):
@@ -58,7 +62,7 @@ class Input_handler:
 
     def get_matches_list(self, str_input, regex_list):
         """Finds all matches and their start and end indexes.
-        
+
         Args:
             str_input: the string to search.
             regex_list: list of regular expressions to apply.
@@ -75,7 +79,7 @@ class Input_handler:
 
     def combine_regex_to_list(self, str_input):
         """Defines regex patterns and combines lists of relevant matches into one list.
-        
+
         Args:
             str_input: The string to search for matches.
 
@@ -84,13 +88,14 @@ class Input_handler:
         """
         operator = r"[-+*/^]+"
         symbol = r"[(),]"
-        number = r"pi+|[\d]+"
+        number = r"[\d]+[\.][\d]+|\d+|pi+"
         func = r"sin+|cos+|tan+|sqrt+|min+|max+"
 
-        # minuses_in_front = r"^[+]*[-]+[-+|+-]*\d*"
-        minuses_in_front = r"^[+-]+[-+|+-]*\d*(pi)*"
-        minus_after_parenthesis = r"(?<=\()[+]*[-]+[-+|+-]*\d+"
-        minuses_list = [minuses_in_front, minus_after_parenthesis]
+        minuses_and_pluses_in_front = r"^[+-]+[-+|+-]*\d*(pi)*[\.]?[\d]*"
+        minus_or_plus_after_parenthesis = \
+            r"(?<=\()[+]*[-]+[-+|+-]*\d+[\.]?[\d]*|(?<=\()[+]*[-]+[-+|+-]*(pi)+"
+        minuses_list = [minuses_and_pluses_in_front,
+                        minus_or_plus_after_parenthesis]
 
         operators = self.get_matches_list(str_input, [operator])
         symbols = self.get_matches_list(str_input, [symbol])
@@ -100,7 +105,7 @@ class Input_handler:
 
         operators = self.trim_matches_list(negatives, operators, 0)
         numbers = self.trim_matches_list(negatives, numbers, 1)
-
+        # print('input: ', str_input)
         # print('negatives: ', negatives)
         # print('operators: ', operators)
         # print('symbols: ', symbols)
@@ -111,8 +116,9 @@ class Input_handler:
         return combined_indexes
 
     def str_input_to_list(self, str_input):
-        """Transforms a string into a list that can be processed by the shunting_yard method in Rpn class.
-        
+        """Transforms a string into a list
+            that can be processed by the shunting_yard method in Rpn class.
+
         Args:
             str_input: The string to process.
 
@@ -120,7 +126,7 @@ class Input_handler:
             List, in processable form.
         """
         index_list = self.combine_regex_to_list(str_input)
-        table = {key: (key,val) for key,val in index_list}
+        table = {key: (key, val) for key, val in index_list}
         input_list = []
         iterations = max(table)+1
         for index in range(iterations):
@@ -135,44 +141,44 @@ class Input_handler:
 
     def trim_operators(self, input_list):
         """Removes consecutive '+' and '-' operators and replaces them with either '-', '+' or ''.
-        
+
         Args:
             input_list: The list to be processed.
 
         Returns:
-            List, with consecutive '+' and '-' operators replaced. 
+            List, with consecutive '+' and '-' operators replaced.
         """
         trimmed_list = []
         for item in input_list:
             pos = len(item)
-            if item[0] in ('+','-'):
-                if item[len(item)-1] not in ('-','+'):
+            if item[0] in ('+', '-'):
+                if item[len(item)-1] not in ('-', '+'):
                     pos = self.get_position(item)
-                    operator=self.get_operator(item[0:pos],True)
+                    operator = self.get_operator(item[0:pos], True)
                     trimmed_list.append(operator + item[pos:len(item)])
                 else:
-                    operator=self.get_operator(item[0:pos],False)
+                    operator = self.get_operator(item[0:pos], False)
                     trimmed_list.append(operator)
             else:
                 trimmed_list.append(item)
         return trimmed_list
 
-    def get_position(self,str_item):
+    def get_position(self, str_item):
         """Gets the position of the last operator token.
-        
+
         Args:
             str_item: The string to process.
-        
-        Returns:
-            Int, index + 1 of last operator token. 
-        """
-        for index,char in reversed(list(enumerate(str_item))):
-            if char in ('-','+'):
-                return index+1
 
+        Returns:
+            Int, index + 1 of last operator token.
+        """
+        for index, char in reversed(list(enumerate(str_item))):
+            if char in ('-', '+'):
+                return index+1
+            
     def get_operator(self, str_item, number):
         """Gets the operator that will replace the consecutive operators in the list
-        
+
         Args:
             str_item: The string of consecutive operator tokens ('+' or '-') (eg. '+--').
             number: Boolean, True if the list item, that will be replaced, contains a number token.
@@ -186,6 +192,6 @@ class Input_handler:
                 neg = not neg
         if not neg and not number:
             return '+'
-        elif not neg and number:
+        if not neg and number:
             return ''
         return '-'
