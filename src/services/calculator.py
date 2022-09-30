@@ -19,7 +19,7 @@ class Calculator:
 
     def handle_operator(self, stack, operator):
         if len(stack) == 0:
-            return None
+            return ['error']
         if len(stack)==1:
             operations_y = float(stack[-1])
             operations_x = 0
