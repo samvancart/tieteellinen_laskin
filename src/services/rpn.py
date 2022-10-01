@@ -1,4 +1,3 @@
-import numbers
 from services.input_handler import InputHandler
 
 
@@ -42,12 +41,12 @@ class Rpn:
         return stack[len(stack)-1]
 
     def get_reverse_polish(self, str_input):
-        """Validates input and calls shunting_yard method.
+        """Validates input, calls method to transform string to list and calls shunting_yard method.
 
         Args:
             str_input: The input string.
 
-        Returns: String, return value of shunting_yard method or None if validations fail.
+        Returns: List, return value of shunting_yard method or None if validations fail.
         """
         if not self.input_handler.validate_input(self.input_handler.get_regex_list(), str_input):
             return None
@@ -61,7 +60,7 @@ class Rpn:
             str_input: List, the mathematical expression.
 
         Returns:
-            List, the mathematical expression in Reverse Polish Notation, None if there are errors.
+            List, the mathematical expression in Reverse Polish Notation, [error] if there are errors.
 
         """
         output_stack = []
