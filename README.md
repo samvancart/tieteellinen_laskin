@@ -14,9 +14,9 @@
 [viikko_4](https://github.com/samvancart/tieteellinen_laskin/blob/main/viikkoraportit/viikko_4.md)  
 ## Ohjelman asennus
 ### Projektin kloonaaminen
-Avaa komentorivi (Windowsilla Git Bash). Luo projektille hakemisto tietokoneellesi ja kloonaa projekti hakemistoon kommennolla
-`git clone https://github.com/samvancart/tieteellinen_laskin`
-Siirry kloonatun projektin juurihakemistoon komennolla
+Avaa komentorivi (Windowsilla Git Bash). Luo projektille hakemisto tietokoneellesi ja kloonaa projekti hakemistoon kommennolla  
+`git clone https://github.com/samvancart/tieteellinen_laskin`  
+Siirry kloonatun projektin juurihakemistoon komennolla  
 `cd tieteellinen_laskin`
 ### Riippuvuuksien asennus
 `poetry install`
