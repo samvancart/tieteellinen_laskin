@@ -8,7 +8,7 @@ class TestRpn(unittest.TestCase):
 
     def test_get_numbers(self):
         self.assertEqual(self.rpn.get_numbers(),
-                         ['0', '1', '2', '3', '4', '5', '6', '7', '9', 'pi'])
+                         ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'pi'])
 
     def test_get_operators_dict(self):
         self.assertEqual(self.rpn.get_operators_dict(),

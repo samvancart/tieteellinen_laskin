@@ -37,6 +37,8 @@ class Calculator:
         return stack
 
     def get_rpn_list(self, str_input):
+        if not str_input:
+            return None
         return self.rpn.get_reverse_polish(str_input)
 
     def calculate(self, str_input):

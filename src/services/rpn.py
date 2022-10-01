@@ -1,8 +1,10 @@
+import numbers
 from services.input_handler import InputHandler
 
 
 class Rpn:
     """Class to transform a mathematical expression into Reverse Polish Notation."""
+
     def __init__(self):
         self.operators = ['+', '-', '*', '/', '^']
         self.precedences = [1, 1, 2, 2, 3]
@@ -11,7 +13,7 @@ class Rpn:
         self.operators_dict = [{'value': z[0], 'precedence':z[1], 'associativity':z[2]}
                                for z in zip(self.operators, self.precedences, self.associativities)]
 
-        self.numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '9', 'pi']
+        self.numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'pi']
         self.functions = ['sin', 'cos', 'tan', 'sqrt', 'min', 'max']
 
         self.input_handler = InputHandler()
@@ -51,7 +53,6 @@ class Rpn:
             return None
         input_list = self.input_handler.str_input_to_list(str_input)
         return self.shunting_yard(input_list)
-
 
     def shunting_yard(self, input_list):
         """Main method to transform input list into reverse polish notation.

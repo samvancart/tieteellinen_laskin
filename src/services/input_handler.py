@@ -3,7 +3,7 @@ import re
 
 class InputHandler:
     def __init__(self):
-        self.numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '9', 'pi']
+        self.numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'pi']
 
     def get_regex_list(self):
         """Input validation.
@@ -30,7 +30,7 @@ class InputHandler:
         return True
 
     def is_number(self, token):
-        if token == 'pi':
+        if token in ('pi','-pi'):
             return True
         for character in token:
             if character in self.numbers:
@@ -175,7 +175,7 @@ class InputHandler:
         for index, char in reversed(list(enumerate(str_item))):
             if char in ('-', '+'):
                 return index+1
-            
+
     def get_operator(self, str_item, number):
         """Gets the operator that will replace the consecutive operators in the list
 

@@ -17,6 +17,14 @@ class TestCalculator(unittest.TestCase):
                          '15.0')
         self.assertEqual(self.calculator.calculate('2^4'),
                          '16.0')
+        self.assertEqual(self.calculator.calculate('8^9'),
+                         '134217728.0')
+        self.assertEqual(self.calculator.calculate('5^8'),
+                         '390625.0')
+        self.assertEqual(self.calculator.calculate('8^8'),
+                         '16777216.0')
+        self.assertEqual(self.calculator.calculate(''),
+                         ['error'])
 
     def test_handle_operator(self):
         self.assertEqual(self.calculator.handle_operator(['3', '4', '2'], '*'),
