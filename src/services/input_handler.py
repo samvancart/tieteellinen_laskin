@@ -30,7 +30,7 @@ class InputHandler:
         return True
 
     def is_number(self, token):
-        if token in ('pi','-pi'):
+        if token in ('pi', '-pi'):
             return True
         for character in token:
             if character in self.numbers:
@@ -92,10 +92,11 @@ class InputHandler:
         func = r"sin+|cos+|tan+|sqrt+|min+|max+"
 
         minuses_and_pluses_in_front = r"^[+-]+[-+|+-]*\d*(pi)*[\.]?[\d]*"
-        minus_or_plus_after_parenthesis = \
-            r"(?<=\()[+]*[-]+[-+|+-]*\d+[\.]?[\d]*|(?<=\()[+]*[-]+[-+|+-]*(pi)+"
+        minus_or_plus_after_parenthesis_or_operator = \
+            r"(?<=[\(\^\*\/])[+]*[-]+[-+|+-]*\d+[\.]?[\d]*|(?<=[\(\^\*\/])[+]*[-]+[-+|+-]*(pi)+"
+
         minuses_list = [minuses_and_pluses_in_front,
-                        minus_or_plus_after_parenthesis]
+                        minus_or_plus_after_parenthesis_or_operator]
 
         operators = self.get_matches_list(str_input, [operator])
         symbols = self.get_matches_list(str_input, [symbol])
@@ -149,18 +150,22 @@ class InputHandler:
             List, with consecutive '+' and '-' operators replaced.
         """
         trimmed_list = []
+        # print('input_list', input_list)
         for item in input_list:
             pos = len(item)
             if item[0] in ('+', '-'):
-                if item[len(item)-1] not in ('-', '+'):
+                if item[-1] not in ('-', '+'):
                     pos = self.get_position(item)
                     operator = self.get_operator(item[0:pos], True)
                     trimmed_list.append(operator + item[pos:len(item)])
                 else:
                     operator = self.get_operator(item[0:pos], False)
                     trimmed_list.append(operator)
+            elif item[0] in ('*', '/', '^'):
+                trimmed_list.append(item[0])
             else:
                 trimmed_list.append(item)
+        # print('trimmed_list', trimmed_list)
         return trimmed_list
 
     def get_position(self, str_item):

@@ -23,6 +23,14 @@ class TestCalculator(unittest.TestCase):
                          '390625.0')
         self.assertEqual(self.calculator.calculate('8^8'),
                          '16777216.0')
+        self.assertEqual(self.calculator.calculate('2^-3'),
+                         '0.125')
+        self.assertEqual(self.calculator.calculate('2^--3'),
+                         '8.0')
+        self.assertEqual(self.calculator.calculate('4/-2'),
+                         '-2.0')
+        self.assertEqual(self.calculator.calculate('4*-2'),
+                         '-8.0')
         self.assertEqual(self.calculator.calculate(''),
                          ['error'])
 
@@ -37,5 +45,5 @@ class TestCalculator(unittest.TestCase):
                          ['0.0'])
         self.assertEqual(self.calculator.handle_operator([], '*'),
                          ['error'])
-        self.assertEqual(self.calculator.handle_operator(['3', '0',], '/'),
+        self.assertEqual(self.calculator.handle_operator(['3', '0', ], '/'),
                          ['error'])
