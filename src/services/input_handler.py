@@ -3,7 +3,8 @@ import re
 
 class InputHandler:
     def __init__(self):
-        self.numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'pi']
+        self.numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'pi',
+                        '-0', '-1', '-2', '-3', '-4', '-5', '-6', '-7', '-8', '-9', '-pi']
 
     def get_regex_list(self):
         """Input validation.

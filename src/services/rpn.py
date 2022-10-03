@@ -12,8 +12,10 @@ class Rpn:
         self.operators_dict = [{'value': z[0], 'precedence':z[1], 'associativity':z[2]}
                                for z in zip(self.operators, self.precedences, self.associativities)]
 
-        self.numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'pi']
-        self.functions = ['sin', 'cos', 'tan', 'sqrt', 'min', 'max']
+        self.numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'pi',
+                        '-0', '-1', '-2', '-3', '-4', '-5', '-6', '-7', '-8', '-9', '-pi']
+        self.functions = ['sin', 'cos', 'tan', 'sqrt', 'min', 'max', '-sin',
+                          '-cos', '-tan', '-sqrt', '-min', '-max']
 
         self.input_handler = InputHandler()
 

@@ -51,7 +51,7 @@ class UI:
         self.buttons_to_grid(entry, frame_bottom)
 
     def get_buttons_list(self):
-        return [['7', '8', '9', 'AC', '^'], ['4', '5', '6', '/', '('],
+        return [['7', '8', '9', 'AC', '^','pi'], ['4', '5', '6', '/', '('],
                 ['1', '2', '3', '*', ')'], ['0', '.', '-', '+', '=']]
 
     def buttons_to_grid(self, entry, frame):

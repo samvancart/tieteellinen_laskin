@@ -1,6 +1,6 @@
 from services.rpn import Rpn
 from services.input_handler import InputHandler
-
+import math
 
 class Calculator:
     """Class for calculating mathematical expressions given in Reverse Polish Notation."""
@@ -21,16 +21,16 @@ class Calculator:
         if len(stack) == 0:
             return ['error']
         if len(stack)==1:
-            operations_y = float(stack[-1])
-            operations_x = 0
-            stack.pop()
+            result = self.handle_function([stack[0]])
+            return [str(float(eval(result[0])))]
         else:
-            operations_y = float(stack[-1])
+            operations_y = stack[-1]
             stack.pop()
-            operations_x = float(stack[-1])
+            operations_x = stack[-1]
             stack.pop()
         try:
-            result = self.operations[operator](operations_x,operations_y)
+            operations_x, operations_y = self.handle_function([operations_x, operations_y])
+            result = self.operations[operator](float(operations_x),float(operations_y))
             stack.append(str(result))
         except:
             stack.append('error')
@@ -56,4 +56,17 @@ class Calculator:
                 stack = self.handle_operator(stack, token)
         if not stack:
             return ['error']
+        elif len(stack) == 1:
+            stack = self.handle_operator(stack, rpn_list[0])
         return stack[0]
+
+    def handle_function(self, item_list):
+        items=[]
+        for item in item_list:
+            if item in ('pi','-pi'):
+                as_string = item[0:-2]+'math.pi'
+                as_number = eval(as_string)
+                items.append(str(as_number))
+            else:
+                items.append(item)
+        return items

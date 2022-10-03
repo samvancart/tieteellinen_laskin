@@ -31,6 +31,10 @@ class TestCalculator(unittest.TestCase):
                          '-2.0')
         self.assertEqual(self.calculator.calculate('4*-2'),
                          '-8.0')
+        self.assertEqual(self.calculator.calculate('4'),
+                         '4.0')
+        self.assertEqual(self.calculator.calculate('pi'),
+                         '3.141592653589793')
         self.assertEqual(self.calculator.calculate(''),
                          ['error'])
 
@@ -42,8 +46,14 @@ class TestCalculator(unittest.TestCase):
         self.assertEqual(self.calculator.handle_operator(['3', '2', '3'], '^'),
                          ['3', '8.0'])
         self.assertEqual(self.calculator.handle_operator(['3'], '*'),
-                         ['0.0'])
+                         ['3.0'])
         self.assertEqual(self.calculator.handle_operator([], '*'),
                          ['error'])
         self.assertEqual(self.calculator.handle_operator(['3', '0', ], '/'),
                          ['error'])
+
+    def test_handle_function(self):
+        self.assertEqual(self.calculator.handle_function(['3', 'pi', ]),
+                         ['3', '3.141592653589793'])
+        self.assertEqual(self.calculator.handle_function(['-pi', '3']),
+                         ['-3.141592653589793', '3'])
