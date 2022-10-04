@@ -56,7 +56,7 @@ class UI:
 
     def get_buttons_list(self):
         return [['7', '8', '9', 'AC', '^', 'pi'], ['4', '5', '6', '/', '(', 'sqrt'],
-                ['1', '2', '3', '*', ')'], ['0', '.', '-', '+', '=']]
+                ['1', '2', '3', '*', ')', 'sin'], ['0', '.', '-', '+', '=']]
 
     def buttons_to_grid(self, entry, frame):
         style = ttk.Style()

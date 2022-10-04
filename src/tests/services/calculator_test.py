@@ -41,11 +41,14 @@ class TestCalculator(unittest.TestCase):
                          '8.0')
         self.assertEqual(self.calculator.calculate('sqrt4'),
                          ['error'])
+        self.assertEqual(self.calculator.calculate('4sqrt('),
+                         ['error'])
+        self.assertEqual(self.calculator.calculate('pisin('),
+                         ['error'])
         self.assertEqual(self.calculator.calculate('sqrt('),
                          ['error'])
         self.assertEqual(self.calculator.calculate(''),
                          ['error'])
-        
 
     def test_handle_operator(self):
         self.assertEqual(self.calculator.handle_operator(['3', '4', '2'], '*'),
@@ -55,7 +58,7 @@ class TestCalculator(unittest.TestCase):
         self.assertEqual(self.calculator.handle_operator(['3', '2', '3'], '^'),
                          ['3', '8.0'])
         self.assertEqual(self.calculator.handle_operator(['3'], '*'),
-                         ['3.0'])         
+                         ['3.0'])
         self.assertEqual(self.calculator.handle_operator([], '*'),
                          ['error'])
         self.assertEqual(self.calculator.handle_operator(['3', '0', ], '/'),
@@ -66,8 +69,11 @@ class TestCalculator(unittest.TestCase):
                          ['3', '3.141592653589793'])
         self.assertEqual(self.calculator.handle_pi(['-pi', '3']),
                          ['-3.141592653589793', '3'])
+
     def test_handle_function(self):
         self.assertEqual(self.calculator.handle_function(['4'], 'sqrt'),
                          ['2.0'])
+        self.assertEqual(self.calculator.handle_function(['4'], 'sin'),
+                         ['0.0697564737441253'])
         self.assertEqual(self.calculator.handle_function([], 'sqrt'),
-                         ['error']) 
+                         ['error'])

@@ -12,20 +12,21 @@ class InputHandler:
         self.function_regex = r"sin+|cos+|tan+|sqrt+|min+|max+"
 
         self.minuses_and_pluses_in_front_of_number_regex = r"^[+-]+[-+|+-]*\d*(pi)*[\.]?[\d]*"
-        self.minuses_and_pluses_in_front_of_function_regex = r"^[+-]+[-+|+-]*(sqrt)+"
-        # self.minuses_and_pluses_in_front_of_function_regex=r"^[+-]+[-+|+-]*(sqrt|sin)"
+        # self.minuses_and_pluses_in_front_of_function_regex = r"^[+-]+[-+|+-]*(sqrt)+"
+        self.minuses_and_pluses_in_front_of_function_regex=r"^[+-]+[-+|+-]*(sqrt|sin)"
         self.minus_or_plus_after_parenthesis_or_operator_regex = \
             r"(?<=[\(\^\*\/])[+]*[-]+[-+|+-]*\d+[\.]?[\d]*|(?<=[\(\^\*\/])[+]*[-]+[-+|+-]*(pi)+"
 
     def get_regex_list(self):
         """Input validation.
 
-        Returns: 
+        Returns:
             List of regular expressions for validating input.
         """
         no_operator_after_right_parenthesis = r"[\)]+\d+"
         no_operator_before_left_parenthesis = r"\d+\(+"
-        no_parenthesis_after_function  = r"sqrt[^\(]"
+        no_operator_before_function=r"(\d+|pi)(sqrt|sin)"
+        no_parenthesis_after_function=r"(sqrt|sin)[^\(]"
         two_operators = r"[\+\-\*\/\^]+[\*\/\^]]*"
         more_than_one_decimal_point = r"\.+\.+"
         error = r"error"
@@ -34,6 +35,7 @@ class InputHandler:
                 two_operators,
                 more_than_one_decimal_point,
                 no_parenthesis_after_function,
+                no_operator_before_function,
                 error
                 ]
 

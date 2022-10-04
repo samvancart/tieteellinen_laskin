@@ -62,7 +62,8 @@ class Rpn:
             str_input: List, the mathematical expression.
 
         Returns:
-            List, the mathematical expression in Reverse Polish Notation, [error] if there are errors.
+            List, the mathematical expression in Reverse Polish Notation,
+            [error] if there are errors.
 
         """
         output_stack = []
@@ -85,7 +86,7 @@ class Rpn:
                         output_stack.append(top_of_stack['value'])
                         operator_stack.pop()
                         top_of_stack = self.get_top_of_stack(operator_stack)
-                    
+
                     if top_of_stack['value'] == '(':
                         operator_stack.pop()
                     if operator_stack:

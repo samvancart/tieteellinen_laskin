@@ -1,6 +1,6 @@
+import math
 from services.rpn import Rpn
 from services.input_handler import InputHandler
-import math
 
 
 class Calculator:
@@ -16,13 +16,15 @@ class Calculator:
             '/': lambda x, y: x/y,
             '^': lambda x, y: x**y,
             'sqrt': lambda x, y: math.sqrt(x),
-            '-sqrt': lambda x, y: math.sqrt(x)*(-1.0)
+            '-sqrt': lambda x, y: math.sqrt(x)*(-1.0),
+            'sin': lambda x, y: math.sin(math.radians(x)),
+            '-sin': lambda x, y: math.sin(math.radians(x))*(-1.0),
         }
 
 
     def calculate(self, str_input):
         """Evaluates the given mathematical expression.
-        
+
         Args:
             str_input: The mathematical expression as a string.
 
@@ -97,7 +99,7 @@ class Calculator:
 
     def handle_operation(self, token_list, operator, stack):
         """Handles calculation.
-        
+
         Args:
             token_list: List of tokens to evaluate.
             operator: The operator or function as string.
@@ -124,8 +126,6 @@ class Calculator:
         if not str_input:
             return None
         return self.rpn.get_reverse_polish(str_input)
-
-    
 
     def handle_pi(self, item_list):
         items = []
