@@ -85,7 +85,7 @@ class Rpn:
                         output_stack.append(top_of_stack['value'])
                         operator_stack.pop()
                         top_of_stack = self.get_top_of_stack(operator_stack)
-
+                    
                     if top_of_stack['value'] == '(':
                         operator_stack.pop()
                     if operator_stack:

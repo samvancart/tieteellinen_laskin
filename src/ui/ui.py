@@ -1,5 +1,6 @@
 from tkinter import Tk, ttk, END
 from services.calculator import Calculator
+from services.rpn import Rpn
 
 
 class UI:
@@ -13,6 +14,7 @@ class UI:
         """
         self._root = root
         self.calculator = Calculator()
+        self.rpn = Rpn()
 
     def button_click(self, value, entry):
 
@@ -24,6 +26,8 @@ class UI:
             return
         current = entry.get()
         new = current + value
+        if value in self.rpn.get_functions():
+            new = current + value + '('
         entry.delete(0, END)
         entry.insert(0, new)
 
@@ -51,7 +55,7 @@ class UI:
         self.buttons_to_grid(entry, frame_bottom)
 
     def get_buttons_list(self):
-        return [['7', '8', '9', 'AC', '^','pi'], ['4', '5', '6', '/', '('],
+        return [['7', '8', '9', 'AC', '^', 'pi'], ['4', '5', '6', '/', '(', 'sqrt'],
                 ['1', '2', '3', '*', ')'], ['0', '.', '-', '+', '=']]
 
     def buttons_to_grid(self, entry, frame):
@@ -66,5 +70,5 @@ class UI:
                     command=lambda value=cell, entry=entry:
                     self.button_click(value, entry)
                 )
-                style.configure('grid.TButton',font=('Helvetica', 14))
+                style.configure('grid.TButton', font=('Helvetica', 14))
                 buttons.grid(row=row_index+3, column=cell_index)

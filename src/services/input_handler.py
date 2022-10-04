@@ -6,13 +6,26 @@ class InputHandler:
         self.numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'pi',
                         '-0', '-1', '-2', '-3', '-4', '-5', '-6', '-7', '-8', '-9', '-pi']
 
+        self.operator_regex = r"[-+*/^]+"
+        self.symbol_regex = r"[(),]"
+        self.number_regex = r"[\d]+[\.][\d]+|\d+|pi+"
+        self.function_regex = r"sin+|cos+|tan+|sqrt+|min+|max+"
+
+        self.minuses_and_pluses_in_front_of_number_regex = r"^[+-]+[-+|+-]*\d*(pi)*[\.]?[\d]*"
+        self.minuses_and_pluses_in_front_of_function_regex = r"^[+-]+[-+|+-]*(sqrt)+"
+        # self.minuses_and_pluses_in_front_of_function_regex=r"^[+-]+[-+|+-]*(sqrt|sin)"
+        self.minus_or_plus_after_parenthesis_or_operator_regex = \
+            r"(?<=[\(\^\*\/])[+]*[-]+[-+|+-]*\d+[\.]?[\d]*|(?<=[\(\^\*\/])[+]*[-]+[-+|+-]*(pi)+"
+
     def get_regex_list(self):
         """Input validation.
 
-        Returns: List of regular expressions for validating input.
+        Returns: 
+            List of regular expressions for validating input.
         """
         no_operator_after_right_parenthesis = r"[\)]+\d+"
         no_operator_before_left_parenthesis = r"\d+\(+"
+        no_parenthesis_after_function  = r"sqrt[^\(]"
         two_operators = r"[\+\-\*\/\^]+[\*\/\^]]*"
         more_than_one_decimal_point = r"\.+\.+"
         error = r"error"
@@ -20,6 +33,7 @@ class InputHandler:
                 no_operator_before_left_parenthesis,
                 two_operators,
                 more_than_one_decimal_point,
+                no_parenthesis_after_function,
                 error
                 ]
 
@@ -44,6 +58,7 @@ class InputHandler:
         Args:
             reference_list: The higher hierarchy list to compare to.
             list_to_clean: The list that will have unwanted matches removed.
+            index: The index of the tuple to compare (0 or 1).
 
         Returns:
             List, trimmed list with unwanted matches removed.
@@ -87,25 +102,20 @@ class InputHandler:
         Returns:
             List, tuples of form (start_index_of_match, end_index_of_match)
         """
-        operator = r"[-+*/^]+"
-        symbol = r"[(),]"
-        number = r"[\d]+[\.][\d]+|\d+|pi+"
-        func = r"sin+|cos+|tan+|sqrt+|min+|max+"
 
-        minuses_and_pluses_in_front = r"^[+-]+[-+|+-]*\d*(pi)*[\.]?[\d]*"
-        minus_or_plus_after_parenthesis_or_operator = \
-            r"(?<=[\(\^\*\/])[+]*[-]+[-+|+-]*\d+[\.]?[\d]*|(?<=[\(\^\*\/])[+]*[-]+[-+|+-]*(pi)+"
 
-        minuses_list = [minuses_and_pluses_in_front,
-                        minus_or_plus_after_parenthesis_or_operator]
+        minuses_list = [self.minuses_and_pluses_in_front_of_number_regex,
+                        self.minus_or_plus_after_parenthesis_or_operator_regex,
+                        self.minuses_and_pluses_in_front_of_function_regex]
 
-        operators = self.get_matches_list(str_input, [operator])
-        symbols = self.get_matches_list(str_input, [symbol])
-        numbers = self.get_matches_list(str_input, [number])
+        operators = self.get_matches_list(str_input, [self.operator_regex])
+        symbols = self.get_matches_list(str_input, [self.symbol_regex])
+        numbers = self.get_matches_list(str_input, [self.number_regex])
         negatives = self.get_matches_list(str_input, minuses_list)
-        functions = self.get_matches_list(str_input, [func])
+        functions = self.get_matches_list(str_input, [self.function_regex])
 
         operators = self.trim_matches_list(negatives, operators, 0)
+        functions = self.trim_matches_list(negatives, functions, 1)
         numbers = self.trim_matches_list(negatives, numbers, 1)
         # print('input: ', str_input)
         # print('negatives: ', negatives)
@@ -138,6 +148,7 @@ class InputHandler:
                 input_list.append(str_input[start:end])
             except KeyError:
                 continue
+        # print('trimmed', input_list)
         trimmed_list = self.trim_operators(input_list)
         return trimmed_list
 
