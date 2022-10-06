@@ -13,9 +13,10 @@ class InputHandler:
 
         self.minuses_and_pluses_in_front_of_number_regex = r"^[+-]+[-+|+-]*\d*(pi)*[\.]?[\d]*"
         # self.minuses_and_pluses_in_front_of_function_regex = r"^[+-]+[-+|+-]*(sqrt)+"
-        self.minuses_and_pluses_in_front_of_function_regex=r"^[+-]+[-+|+-]*(sqrt|sin)"
+        self.minuses_and_pluses_in_front_of_function_regex = r"^[+-]+[-+|+-]*(sqrt|sin)"
         self.minus_or_plus_after_parenthesis_or_operator_regex = \
             r"(?<=[\(\^\*\/])[+]*[-]+[-+|+-]*\d+[\.]?[\d]*|(?<=[\(\^\*\/])[+]*[-]+[-+|+-]*(pi)+"
+
 
     def get_regex_list(self):
         """Input validation.
@@ -25,8 +26,8 @@ class InputHandler:
         """
         no_operator_after_right_parenthesis = r"[\)]+\d+"
         no_operator_before_left_parenthesis = r"\d+\(+"
-        no_operator_before_function=r"(\d+|pi)(sqrt|sin)"
-        no_parenthesis_after_function=r"(sqrt|sin)[^\(]"
+        no_operator_before_function = r"(\d+|pi)(sqrt|sin)"
+        no_parenthesis_after_function = r"(sqrt|sin)[^\(]"
         two_operators = r"[\+\-\*\/\^]+[\*\/\^]]*"
         more_than_one_decimal_point = r"\.+\.+"
         error = r"error"
@@ -60,7 +61,7 @@ class InputHandler:
         Args:
             reference_list: The higher hierarchy list to compare to.
             list_to_clean: The list that will have unwanted matches removed.
-            index: The index of the tuple to compare (0 or 1).
+            index: The index of the tuple to compare (0 (start of string) or 1 (end of string)).
 
         Returns:
             List, trimmed list with unwanted matches removed.
@@ -105,7 +106,6 @@ class InputHandler:
             List, tuples of form (start_index_of_match, end_index_of_match)
         """
 
-
         minuses_list = [self.minuses_and_pluses_in_front_of_number_regex,
                         self.minus_or_plus_after_parenthesis_or_operator_regex,
                         self.minuses_and_pluses_in_front_of_function_regex]
@@ -142,7 +142,10 @@ class InputHandler:
         index_list = self.combine_regex_to_list(str_input)
         table = {key: (key, val) for key, val in index_list}
         input_list = []
-        iterations = max(table)+1
+        try:
+            iterations = max(table)+1
+        except ValueError:
+            return ['error']
         for index in range(iterations):
             try:
                 start = table[index][0]

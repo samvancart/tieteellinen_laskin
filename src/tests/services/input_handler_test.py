@@ -25,6 +25,8 @@ class TestInputHandler(unittest.TestCase):
                          ['3.2', '-', '(', '-12.52', ')'])
         self.assertEqual(self.input_handler.str_input_to_list('-3.2-(12.52)'),
                          ['-3.2', '-', '(', '12.52', ')'])
+        self.assertEqual(self.input_handler.str_input_to_list(''),
+                         ['error'])
 
     def test_is_number(self):
         numbers = [
