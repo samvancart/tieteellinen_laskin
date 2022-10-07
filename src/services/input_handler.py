@@ -8,11 +8,10 @@ class InputHandler:
 
         self.operator_regex = r"[-+*/^]+"
         self.symbol_regex = r"[(),]"
-        self.number_regex = r"[\d]+[\.][\d]+|\d+|pi+"
+        self.number_regex = r"[\d]*[\.][\d]+|\d+|pi+"
         self.function_regex = r"sin+|cos+|tan+|sqrt+|min+|max+"
 
         self.minuses_and_pluses_in_front_of_number_regex = r"^[+-]+[-+|+-]*\d*(pi)*[\.]?[\d]*"
-        # self.minuses_and_pluses_in_front_of_function_regex = r"^[+-]+[-+|+-]*(sqrt)+"
         self.minuses_and_pluses_in_front_of_function_regex = r"^[+-]+[-+|+-]*(sqrt|sin)"
         self.minus_or_plus_after_parenthesis_or_operator_regex = \
             r"(?<=[\(\^\*\/])[+]*[-]+[-+|+-]*\d+[\.]?[\d]*|(?<=[\(\^\*\/])[+]*[-]+[-+|+-]*(pi)+"
@@ -29,7 +28,7 @@ class InputHandler:
         no_operator_before_function = r"(\d+|pi)(sqrt|sin)"
         no_parenthesis_after_function = r"(sqrt|sin)[^\(]"
         two_operators = r"[\+\-\*\/\^]+[\*\/\^]]*"
-        more_than_one_decimal_point = r"\.+\.+"
+        more_than_one_decimal_point = r"\.\.+"
         error = r"error"
         return [no_operator_after_right_parenthesis,
                 no_operator_before_left_parenthesis,
@@ -197,6 +196,7 @@ class InputHandler:
         for index, char in reversed(list(enumerate(str_item))):
             if char in ('-', '+'):
                 return index+1
+        return 1
 
     def get_operator(self, str_item, number):
         """Gets the operator that will replace the consecutive operators in the list

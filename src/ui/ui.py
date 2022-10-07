@@ -16,19 +16,25 @@ class UI:
             root: Tkinter-element to hold ui.
         """
         self._root = root
+        self.frame_bottom = self.create_frame()
+        self.frame_top_left = self.create_frame()
+        self.frame_top_right = self.create_frame()
+        self.entry = self.create_entry(self.frame_top_left)
+
         self.calculator = Calculator()
         self.rpn = Rpn()
         self.var_clicked = False
-        self.var_handler = VariableHandler()
+        self.variable_handler = VariableHandler()
 
-    def button_click(self, value, entry):
+    def default_button_click(self, value, entry):
+        # Handle default button click event
         if value == 'var':
             self.var_clicked = True
         if value == '=' and not self.var_clicked:
             self.handle_equals(entry)
             return
         if value == '=' and self.var_clicked:
-            self.handle_var(entry)
+            self.handle_variable(entry)
             return
         if value == 'AC':
             self.clear_entry(entry)
@@ -43,15 +49,30 @@ class UI:
         entry.delete(0, END)
         entry.insert(0, new)
 
-    def handle_var(self, entry):
-        self.var_handler.create_variable(entry.get())
+    def variable_button_click(self, value, entry):
+        # Handle variable button click event
+        str_input = value
+        result = self.calculator.calculate(str_input)
+        current = entry.get()
+        new = current + result
+        entry.delete(0, END)
+        entry.insert(0, new)
+
+    def handle_variable(self, entry):
+        # Create a new variable and add variable button to grid 
+        self.variable_handler.create_variable(entry.get())
         self.clear_entry(entry)
         self.handle_var_clicked()
-        # print(self.var_handler.get_variables_as_dict())
-        # print(self.var_clicked)
+        self.variable_frame_to_grid()
+        self.variable_buttons_to_grid(
+            self.entry,
+            self.frame_top_right,
+            self.get_variable_buttons_list(),
+        )
         return
 
     def handle_equals(self, entry):
+        # Handle event when equals button is clicked
         if entry.get() == '':
             return
         str_input = entry.get()
@@ -67,33 +88,62 @@ class UI:
         entry.delete(0, END)
 
     def start(self):
-        frame_bottom = ttk.Frame(master=self._root, borderwidth=5, padding=10)
-        frame_top = ttk.Frame(master=self._root, borderwidth=5, padding=10)
-        frame_top.grid(column=0, row=0, columnspan=3, rowspan=2, sticky=tk.W)
-        frame_bottom.grid(column=0, row=2, columnspan=4,
-                          rowspan=4, sticky=tk.W)
+        # Create start layout
+        self.frame_top_left.grid(
+            column=0, row=0, columnspan=2, rowspan=2, sticky=tk.W)
+        self.frame_top_right.grid(column=2, row=0, columnspan=2, rowspan=2)
+        self.frame_bottom.grid(column=0, row=2, columnspan=4,
+                               rowspan=4, sticky=tk.W)
 
-        entry = ttk.Entry(master=frame_top, width=25, font=('Helvetica', 30))
-        entry.grid(padx=10, pady=10)
-        entry.bind("<Key>", lambda event: 'break')
+        self.default_buttons_to_grid(self.entry, self.frame_bottom,
+                             self.get_default_buttons_list())
 
-        self.buttons_to_grid(entry, frame_bottom)
-
-    def get_buttons_list(self):
+    def get_default_buttons_list(self):
         return [['7', '8', '9', 'AC', '^', 'pi'], ['4', '5', '6', '/', '(', 'sqrt'],
                 ['1', '2', '3', '*', ')', 'sin'], ['0', '.', '-', '+', '=', 'var']]
 
-    def buttons_to_grid(self, entry, frame):
+    def get_variable_buttons_list(self):
+        return self.variable_handler.get_variable_buttons_list()
+
+    def variable_frame_to_grid(self):
+        self.frame_top_right.grid(column=2, row=0, columnspan=2, rowspan=2)
+
+    def create_frame(self):
+        frame = ttk.Frame(master=self._root, borderwidth=5, padding=10)
+        return frame
+
+    def create_entry(self, frame):
+        entry = ttk.Entry(master=frame, width=25, font=('Helvetica', 30))
+        entry.grid(padx=10, pady=10)
+        entry.bind("<Key>", lambda event: 'break')
+        return entry
+
+    def default_buttons_to_grid(self, entry, frame, buttons):
         style = ttk.Style()
-        for row_index, row in enumerate(self.get_buttons_list()):
+        for row_index, row in enumerate(buttons):
             for cell_index, cell in enumerate(row):
                 buttons = ttk.Button(
                     frame,
                     text=cell,
-                    style='grid.TButton',
+                    style='default.TButton',
                     padding=30,
                     command=lambda value=cell, entry=entry:
-                    self.button_click(value, entry)
+                    self.default_button_click(value, entry)
                 )
-                style.configure('grid.TButton', font=('Helvetica', 14))
+                style.configure('default.TButton', font=('Helvetica', 14))
+                buttons.grid(row=row_index+3, column=cell_index)
+
+    def variable_buttons_to_grid(self, entry, frame, buttons):
+        style = ttk.Style()
+        for row_index, row in enumerate(buttons):
+            for cell_index, cell in enumerate(row):
+                buttons = ttk.Button(
+                    frame,
+                    text=cell['name'] + '=' + cell['value'],
+                    style='var.TButton',
+                    padding=10,
+                    command=lambda value=cell['value'], entry=entry:
+                    self.variable_button_click(value, entry)
+                )
+                style.configure('var.TButton', font=('Helvetica', 14))
                 buttons.grid(row=row_index+3, column=cell_index)

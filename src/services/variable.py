@@ -19,5 +19,5 @@ class Variable:
     def get_id(self):
         return self.var_id
 
-    def get_variable(self):
+    def get_variable_as_dict(self):
         return self.variable_dict

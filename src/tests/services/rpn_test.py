@@ -69,6 +69,8 @@ class TestRpn(unittest.TestCase):
                          None)
         self.assertEqual(self.rpn.get_reverse_polish('3+4*2/(1-5(^2^3'),
                          None)
+        self.assertEqual(self.rpn.get_reverse_polish('3+4..2'),
+                         None)
 
         # Errors found at shunting_yard
         self.assertEqual(self.rpn.get_reverse_polish('(3+4'),

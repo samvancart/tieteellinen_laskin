@@ -69,11 +69,10 @@ class Calculator:
         if len(stack) == 1:
             result = self.handle_pi([stack[0]])
             return [str(float(eval(result[0])))]
-        else:
-            token_y = stack[-1]
-            stack.pop()
-            token_x = stack[-1]
-            stack.pop()
+        token_y = stack[-1]
+        stack.pop()
+        token_x = stack[-1]
+        stack.pop()
         stack = self.handle_operation(
             [token_x, token_y], operator, stack)
         return stack

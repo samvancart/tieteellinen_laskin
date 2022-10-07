@@ -6,6 +6,12 @@ class TestInputHandler(unittest.TestCase):
     def setUp(self):
         self.input_handler = InputHandler()
 
+    def test_get_position(self):
+        self.assertEqual(self.input_handler.get_position('--3'),
+                         2)
+        self.assertEqual(self.input_handler.get_position('3'),
+                         1)
+
     def test_str_input_to_list(self):
         self.assertEqual(self.input_handler.str_input_to_list('3+4'),
                          ['3', '+', '4'])
