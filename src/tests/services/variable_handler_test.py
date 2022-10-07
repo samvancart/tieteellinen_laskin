@@ -9,6 +9,8 @@ class TestVariableHandler(unittest.TestCase):
     def test_create_variable(self):
         self.assertEqual(self.variable_handler.create_variable('var='),
                          None)
+        self.assertEqual(self.variable_handler.create_variable('var=3('),
+                         'error')
 
         self.variable_handler.create_variable('var=1+2')
         self.assertEqual(self.variable_handler.get_variables_as_dict(),

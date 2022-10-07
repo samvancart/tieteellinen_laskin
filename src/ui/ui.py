@@ -60,8 +60,11 @@ class UI:
 
     def handle_variable(self, entry):
         # Create a new variable and add variable button to grid 
-        self.variable_handler.create_variable(entry.get())
+        result = self.variable_handler.create_variable(entry.get())
         self.clear_entry(entry)
+        if result == 'error':
+            entry.insert(0, 'error')
+            return
         self.handle_var_clicked()
         self.variable_frame_to_grid()
         self.variable_buttons_to_grid(

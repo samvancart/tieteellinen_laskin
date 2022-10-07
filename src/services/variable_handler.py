@@ -1,3 +1,4 @@
+from services.calculator import Calculator
 from services.variable import Variable
 
 
@@ -7,19 +8,23 @@ class VariableHandler:
     def __init__(self):
         self.variables_dict = []
         self.created_vars = 0
+        self.calculator = Calculator()
 
     def create_variable(self, entry):
-        """Creates a variable and adds it to variables list
+        """Creates a variable and adds it to variables list.
 
         Args:
-            entry: variable value e.g. (var=5)
+            entry: variable value e.g. (var=5).
 
         Returns:
-            List of variables as dictionaries
+            List of variables as dictionaries or 'error', if the variable value is invalid.
         """
         value = entry.split('=')[1]
         if value == '':
             return None
+        result = self.calculator.calculate(value)
+        if result == ['error'] or result == None:
+            return 'error'
         self.created_vars += 1
         var_id = self.created_vars
         variable = Variable('var_'+str(var_id), value, var_id)
