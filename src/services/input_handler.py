@@ -24,7 +24,7 @@ class InputHandler:
             List of regular expressions for validating input.
         """
         no_operator_after_right_parenthesis = r"[\)]+\d+"
-        no_operator_before_left_parenthesis = r"\d+\(+"
+        no_operator_before_left_parenthesis = r"(\d+|\)+)\(+"
         no_operator_before_function = r"(\d+|pi)(sqrt|sin)"
         no_parenthesis_after_function = r"(sqrt|sin)[^\(]"
         two_operators = r"[\+\-\*\/\^]+[\*\/\^]]*"

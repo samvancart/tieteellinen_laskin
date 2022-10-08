@@ -128,17 +128,13 @@ class Rpn:
             return operator_stack
 
         top_of_stack = self.get_top_of_stack(operator_stack)
-        try:
-            while top_of_stack['value'] != '(' \
-                and (top_of_stack['precedence'] > operator_dict['precedence']
-                     or (top_of_stack['precedence'] == operator_dict['precedence']
-                     and operator_dict['associativity'] == 0)):
-                output_stack.append(top_of_stack['value'])
-                operator_stack.pop()
-                top_of_stack = self.get_top_of_stack(operator_stack)
-            operator_stack.append(operator_dict)
-        except KeyError:
-            print('Mismatched parenthesis!')
-            return ['error']
+        while top_of_stack and top_of_stack['value'] != '(' \
+            and (top_of_stack['precedence'] > operator_dict['precedence']
+                    or (top_of_stack['precedence'] == operator_dict['precedence']
+                    and operator_dict['associativity'] == 0)):
+            output_stack.append(top_of_stack['value'])
+            operator_stack.pop()
+            top_of_stack = self.get_top_of_stack(operator_stack)
+        operator_stack.append(operator_dict)
 
         return top_of_stack

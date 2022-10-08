@@ -13,6 +13,8 @@ class TestCalculator(unittest.TestCase):
                          '11.0')
         self.assertEqual(self.calculator.calculate('3-(-12)'),
                          '15.0')
+        self.assertEqual(self.calculator.calculate('60.0*(-2)+3'),
+                         '-117.0')
         self.assertEqual(self.calculator.calculate('3--12'),
                          '15.0')
         self.assertEqual(self.calculator.calculate('2^4'),
