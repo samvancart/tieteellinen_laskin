@@ -28,7 +28,7 @@ class InputHandler:
         no_operator_before_function = r"(\d+|pi)(sqrt|sin)"
         no_parenthesis_after_function = r"(sqrt|sin)[^\(]"
         two_operators = r"[\+\-\*\/\^]+[\*\/\^]]*"
-        more_than_one_decimal_point = r"\.\.+"
+        more_than_one_decimal_point = r"\.[^\+\-\*\/\^]*\.+"
         error = r"error"
         return [no_operator_after_right_parenthesis,
                 no_operator_before_left_parenthesis,

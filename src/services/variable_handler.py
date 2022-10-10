@@ -23,7 +23,7 @@ class VariableHandler:
         if value == '':
             return None
         result = self.calculator.calculate(value)
-        if result == ['error'] or result == None:
+        if result in (['error'], None):
             return 'error'
         self.created_vars += 1
         var_id = self.created_vars
@@ -44,7 +44,7 @@ class VariableHandler:
 
     def get_variable_buttons_list(self, buttons_in_row=3):
         """Creates 2-dimensional list (rows, columns) of variables.
-        
+
         Args:
             buttons_in_row: The number of variables in each list.
 

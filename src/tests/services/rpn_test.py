@@ -55,6 +55,8 @@ class TestRpn(unittest.TestCase):
                          ['20', '30', '*'])
         self.assertEqual(self.rpn.get_reverse_polish('3-(-5-5)'),
                          ['3', '-5', '5', '-', '-'])
+        self.assertEqual(self.rpn.get_reverse_polish('3.2+4.5'),
+                         ['3.2','4.5','+'])
         self.assertEqual(self.rpn.get_reverse_polish('()'),
                          [])
         self.assertEqual(self.rpn.get_reverse_polish('((()))'),
@@ -70,6 +72,12 @@ class TestRpn(unittest.TestCase):
         self.assertEqual(self.rpn.get_reverse_polish('3+4*2/(1-5(^2^3'),
                          None)
         self.assertEqual(self.rpn.get_reverse_polish('3+4..2'),
+                         None)
+        self.assertEqual(self.rpn.get_reverse_polish('3.2.1'),
+                         None)
+        self.assertEqual(self.rpn.get_reverse_polish('...1'),
+                         None)
+        self.assertEqual(self.rpn.get_reverse_polish('1..'),
                          None)
 
         # Errors found at shunting_yard

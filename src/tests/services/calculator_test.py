@@ -41,6 +41,8 @@ class TestCalculator(unittest.TestCase):
                          '2.0')
         self.assertEqual(self.calculator.calculate('6+sqrt(4)'),
                          '8.0')
+        self.assertEqual(self.calculator.calculate('6.3*sqrt(4.5)'),
+                         '13.364318164425747')
         self.assertEqual(self.calculator.calculate('sqrt4'),
                          ['error'])
         self.assertEqual(self.calculator.calculate('4sqrt('),
@@ -51,6 +53,12 @@ class TestCalculator(unittest.TestCase):
                          ['error'])
         self.assertEqual(self.calculator.calculate(''),
                          ['error'])
+        # Python's exponent function '**' returns a complex number when
+        # a number k where k < 0 is raised to a fractional power.
+        self.assertEqual(self.calculator.calculate('-3^1.56'),
+                         'error')
+        self.assertEqual(self.calculator.calculate('-15^sqrt(6)'),
+                         'error')
 
     def test_handle_operator(self):
         self.assertEqual(self.calculator.handle_operator(['3', '4', '2'], '*'),
@@ -65,12 +73,20 @@ class TestCalculator(unittest.TestCase):
                          ['error'])
         self.assertEqual(self.calculator.handle_operator(['3', '0', ], '/'),
                          ['error'])
+        self.assertEqual(self.calculator.handle_operator(['error'], ''),
+                         ['error'])
 
     def test_handle_pi(self):
         self.assertEqual(self.calculator.handle_pi(['3', 'pi', ]),
                          ['3', '3.141592653589793'])
         self.assertEqual(self.calculator.handle_pi(['-pi', '3']),
                          ['-3.141592653589793', '3'])
+
+    def test_evaluate_pi(self):
+        self.assertEqual(self.calculator.evaluate_pi('pi'),
+                         3.141592653589793)
+        self.assertEqual(self.calculator.evaluate_pi('-pi'),
+                         -3.141592653589793)
 
     def test_handle_function(self):
         self.assertEqual(self.calculator.handle_function(['4'], 'sqrt'),

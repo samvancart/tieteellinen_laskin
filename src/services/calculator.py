@@ -68,7 +68,10 @@ class Calculator:
             return ['error']
         if len(stack) == 1:
             result = self.handle_pi([stack[0]])
-            return [str(float(eval(result[0])))]
+            try:
+                return [str(float(result[0]))]
+            except (TypeError, ValueError):
+                return ['error']
         token_y = stack[-1]
         stack.pop()
         token_x = stack[-1]
@@ -130,9 +133,14 @@ class Calculator:
         items = []
         for item in item_list:
             if item in ('pi', '-pi'):
-                as_string = item[0:-2]+'math.pi'
-                as_number = eval(as_string)
+                as_number = self.evaluate_pi(item)
                 items.append(str(as_number))
             else:
                 items.append(item)
         return items
+
+    def evaluate_pi(self, item):
+        if item[0:-2] == '-':
+            return math.pi*(-1)
+        return math.pi
+    
