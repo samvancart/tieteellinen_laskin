@@ -32,6 +32,10 @@ class TestCalculator(unittest.TestCase):
                          '0.10510423526567647')
         self.assertEqual(self.calculator.calculate('-tan(6)'),
                          '-0.10510423526567647')
+        self.assertEqual(self.calculator.calculate('cos(6)'),
+                         '0.9945218953682733')
+        self.assertEqual(self.calculator.calculate('-cos(6)'),
+                         '-0.9945218953682733')
         # addition
         self.assertEqual(self.calculator.calculate('3+4'),
                          '7.0')

@@ -2,6 +2,7 @@ import re
 
 
 class InputHandler:
+    """Class to validate and handle input."""
     def __init__(self):
         self.numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'pi',
                         '-0', '-1', '-2', '-3', '-4', '-5', '-6', '-7', '-8', '-9', '-pi']
@@ -12,7 +13,7 @@ class InputHandler:
         self.function_regex = r"sin+|cos+|tan+|sqrt+|min+|max+"
 
         self.minuses_and_pluses_in_front_of_number_regex = r"^[+-]+[-+|+-]*\d*(pi)*[\.]?[\d]*"
-        self.minuses_and_pluses_in_front_of_function_regex = r"^[+-]+[-+|+-]*(sqrt|sin|tan)"
+        self.minuses_and_pluses_in_front_of_function_regex = r"^[+-]+[-+|+-]*(sqrt|sin|tan|cos)"
         self.minus_or_plus_after_parenthesis_or_operator_regex = \
             r"(?<=[\(\^\*\/])[+]*[-]+[-+|+-]*\d+[\.]?[\d]*|(?<=[\(\^\*\/])[+]*[-]+[-+|+-]*(pi)+"
 
@@ -25,8 +26,8 @@ class InputHandler:
         """
         no_operator_after_right_parenthesis = r"[\)]+\d+"
         no_operator_before_left_parenthesis = r"(\d+|\)+)\(+"
-        no_operator_before_function = r"(\d+|pi)(sqrt|sin|tan)"
-        no_parenthesis_after_function = r"(sqrt|sin|tan)[^\(]"
+        no_operator_before_function = r"(\d+|pi)(sqrt|sin|tan|cos)"
+        no_parenthesis_after_function = r"(sqrt|sin|tan|cos)[^\(]"
         two_operators = r"[\+\-\*\/\^]+[\*\/\^]]*"
         more_than_one_decimal_point = r"\.[^\+\-\*\/\^]*\.+"
         error = r"error"

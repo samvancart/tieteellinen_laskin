@@ -21,8 +21,9 @@ class Calculator:
             '-sin': lambda x, y: math.sin(math.radians(x))*(-1.0),
             'tan': lambda x, y: math.tan(math.radians(x)),
             '-tan': lambda x, y: math.tan(math.radians(x))*(-1.0),
+            'cos': lambda x, y: math.cos(math.radians(x)),
+            '-cos': lambda x, y: math.cos(math.radians(x))*(-1.0),
         }
-
 
     def calculate(self, str_input):
         """Evaluates the given mathematical expression.
@@ -125,7 +126,6 @@ class Calculator:
             stack.append('error')
         return stack
 
-
     def get_rpn_list(self, str_input):
         if not str_input:
             return None
@@ -145,4 +145,3 @@ class Calculator:
         if item[0:-2] == '-':
             return math.pi*(-1)
         return math.pi
-    
