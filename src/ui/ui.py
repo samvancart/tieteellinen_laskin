@@ -23,8 +23,8 @@ class UI:
 
         self.calculator = Calculator()
         self.rpn = Rpn()
-        self.var_clicked = False
         self.variable_handler = VariableHandler()
+        self.var_clicked = False
 
     def default_button_click(self, value, entry):
         # Handle default button click event
@@ -102,7 +102,7 @@ class UI:
                              self.get_default_buttons_list())
 
     def get_default_buttons_list(self):
-        return [['7', '8', '9', 'AC', '^', 'pi'], ['4', '5', '6', '/', '(', 'sqrt'],
+        return [['7', '8', '9', 'AC', '^', 'pi', 'tan'], ['4', '5', '6', '/', '(', 'sqrt'],
                 ['1', '2', '3', '*', ')', 'sin'], ['0', '.', '-', '+', '=', 'var']]
 
     def get_variable_buttons_list(self):

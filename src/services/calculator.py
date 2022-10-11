@@ -19,6 +19,8 @@ class Calculator:
             '-sqrt': lambda x, y: math.sqrt(x)*(-1.0),
             'sin': lambda x, y: math.sin(math.radians(x)),
             '-sin': lambda x, y: math.sin(math.radians(x))*(-1.0),
+            'tan': lambda x, y: math.tan(math.radians(x)),
+            '-tan': lambda x, y: math.tan(math.radians(x))*(-1.0),
         }
 
 
