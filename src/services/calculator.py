@@ -122,7 +122,7 @@ class Calculator:
                 result = self.operations[operator](
                     float(token_list[0]), float(token_list[1]))
             stack.append(str(result))
-        except:
+        except ZeroDivisionError:
             stack.append('error')
         return stack
 

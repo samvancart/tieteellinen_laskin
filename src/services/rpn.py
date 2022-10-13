@@ -81,26 +81,14 @@ class Rpn:
                 operator_stack.append(
                     {'value': '(', 'precedence': 0, 'associativity': 0})
             elif token == ')':
-                try:
-                    while top_of_stack['value'] != '(':
-                        output_stack.append(top_of_stack['value'])
-                        operator_stack.pop()
-                        top_of_stack = self.get_top_of_stack(operator_stack)
+                output_stack = self.handle_closing_bracket(
+                    output_stack, operator_stack, top_of_stack)
 
-                    # if top_of_stack['value'] == '(':
-                    operator_stack.pop()
-                    if operator_stack:
-                        top_of_stack = self.get_top_of_stack(operator_stack)
-                        if top_of_stack['value'] in self.functions:
-                            output_stack.append(top_of_stack['value'])
-                            operator_stack.pop()
-                except KeyError:
-                    # print('Errors')
-                    return ['error']
+        if 'error' in output_stack:
+            return ['error']
         while len(operator_stack) > 0:
             top_of_stack = self.get_top_of_stack(operator_stack)
             if top_of_stack['value'] == '(':
-                # print('Error')
                 return ['error']
             output_stack.append(top_of_stack['value'])
             operator_stack.pop()
@@ -130,11 +118,38 @@ class Rpn:
         top_of_stack = self.get_top_of_stack(operator_stack)
         while top_of_stack and top_of_stack['value'] != '(' \
             and (top_of_stack['precedence'] > operator_dict['precedence']
-                    or (top_of_stack['precedence'] == operator_dict['precedence']
-                    and operator_dict['associativity'] == 0)):
+                 or (top_of_stack['precedence'] == operator_dict['precedence']
+                     and operator_dict['associativity'] == 0)):
             output_stack.append(top_of_stack['value'])
             operator_stack.pop()
             top_of_stack = self.get_top_of_stack(operator_stack)
         operator_stack.append(operator_dict)
 
         return top_of_stack
+
+    def handle_closing_bracket(self, output_stack, operator_stack, top_of_stack):
+        """Helper method that handles the str_input token when it is a closing bracket.
+
+        Args:
+            output_stack: The output_stack in its current state.
+            operator_stack: The operator_stack in its current state.
+            top_of_stack: First item in operator stack.
+
+            Returns:
+                List, new state of output_stack.
+        """
+        while top_of_stack and top_of_stack['value'] != '(':
+            output_stack.append(top_of_stack['value'])
+            operator_stack.pop()
+            top_of_stack = self.get_top_of_stack(operator_stack)
+        if not top_of_stack or not top_of_stack['value'] == '(':
+            output_stack = ['error']
+            return output_stack
+        operator_stack.pop()
+        if operator_stack:
+            top_of_stack = self.get_top_of_stack(operator_stack)
+            if top_of_stack['value'] in self.functions:
+                output_stack.append(top_of_stack['value'])
+                operator_stack.pop()
+
+        return output_stack

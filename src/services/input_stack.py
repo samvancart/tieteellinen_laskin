@@ -15,7 +15,7 @@ class InputStack:
         return ''.join(self.input_stack)
 
     def add_to_input_stack(self, value):
-        if not type(value) == str:
+        if not isinstance(value, str):
             value = 'error'
         extra_token = ''
         if value in self.rpn.get_functions():
@@ -28,12 +28,9 @@ class InputStack:
         self.input_stack = []
 
     def delete_from_input_stack(self):
-        if not self.input_stack:
-            return
-        self.input_stack.pop()
-        return self.input_stack
+        if self.input_stack:
+            self.input_stack.pop()
 
     def handle_var(self):
         self.clear_input_stack()
         self.add_to_input_stack('var')
-

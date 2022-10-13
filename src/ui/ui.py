@@ -96,7 +96,7 @@ class UI:
             self.var_clicked = False
 
     def handle_del(self):
-        if not self.input_stack:
+        if not self.input_stack.get_input_stack():
             return
         if self.input_stack.get_input_stack()[-1] == 'var=':
             self.handle_var_clicked()
@@ -122,8 +122,6 @@ class UI:
                                      self.get_default_buttons_list())
 
     def get_default_buttons_list(self):
-        # return [['7', '8', '9', 'AC', '^', 'pi', 'tan'], ['4', '5', '6', '/', '(', 'sqrt'],
-        #         ['1', '2', '3', '*', ')', 'sin'], ['0', '.', '-', '+', '=', 'var']]
         return [['7', '8', '9', 'DEL', 'AC', '(', ')'], ['4', '5', '6', '*', '/', 'sin', 'sqrt'],
                 ['1', '2', '3', '+', '-', 'tan', 'var'], ['0', '.', 'pi', '^', '=', 'cos']]
 

@@ -93,3 +93,9 @@ class TestRpn(unittest.TestCase):
                          ['error'])
         self.assertEqual(self.rpn.get_reverse_polish('(()'),
                          ['error'])
+
+    def test_handle_closing_bracket(self):
+        self.assertEqual(self.rpn.handle_closing_bracket(['1'], [], {}),
+                         ['error'])
+        self.assertEqual(self.rpn.handle_closing_bracket(['1'], [None], {}),
+                         ['error'])

@@ -119,12 +119,6 @@ class InputHandler:
         operators = self.trim_matches_list(negatives, operators, 0)
         functions = self.trim_matches_list(negatives, functions, 1)
         numbers = self.trim_matches_list(negatives, numbers, 1)
-        # print('input: ', str_input)
-        # print('negatives: ', negatives)
-        # print('operators: ', operators)
-        # print('symbols: ', symbols)
-        # print('numbers: ', numbers)
-        # print('functions: ', functions)
 
         combined_indexes = negatives + operators + symbols + numbers + functions
         return combined_indexes
