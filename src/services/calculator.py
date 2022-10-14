@@ -36,7 +36,7 @@ class Calculator:
         """
         rpn_list = self.get_rpn_list(str_input)
         # print('rpn_list', rpn_list)
-        if not rpn_list:
+        if not rpn_list or rpn_list == ['error']:
             return ['error']
         stack = []
         operators = self.rpn.get_operators()
@@ -48,11 +48,9 @@ class Calculator:
             elif token in operators:
                 stack = self.handle_operator(stack, token)
                 last_token = token
-            elif token in functions:
+            else:
                 stack = self.handle_function(stack, token)
                 last_token = token
-        if not stack:
-            return ['error']
         if len(stack) == 1 and last_token not in functions:
             stack = self.handle_operator(stack, rpn_list[0])
         return stack[0]
@@ -122,7 +120,7 @@ class Calculator:
                 result = self.operations[operator](
                     float(token_list[0]), float(token_list[1]))
             stack.append(str(result))
-        except ZeroDivisionError:
+        except (ZeroDivisionError, OverflowError):
             stack.append('error')
         return stack
 

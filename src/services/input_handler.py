@@ -5,11 +5,11 @@ class InputHandler:
     """Class to validate and handle input."""
     def __init__(self):
         self.numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'pi',
-                        '-0', '-1', '-2', '-3', '-4', '-5', '-6', '-7', '-8', '-9', '-pi']
+                        '-0', '-1', '-2', '-3', '-4', '-5', '-6', '-7', '-8', '-9', '-pi', 'e']
 
-        self.operator_regex = r"[-+*/^]+"
+        self.operator_regex = r"(?<!e)[-+*/^]+"
         self.symbol_regex = r"[(),]"
-        self.number_regex = r"[\d]*[\.][\d]+|\d+|pi+"
+        self.number_regex = r"[\d]*[\.]\d+(e\+)*\d*|\d+|pi+"
         self.function_regex = r"sin+|cos+|tan+|sqrt+|min+|max+"
 
         self.minuses_and_pluses_in_front_of_number_regex = r"^[+-]+[-+|+-]*\d*(pi)*[\.]?[\d]*"

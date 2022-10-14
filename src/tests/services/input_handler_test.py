@@ -40,6 +40,7 @@ class TestInputHandler(unittest.TestCase):
             '-0', '-1', '-2', '-3', '-4', '-5', '-6', '-7', '-8', '-9', '-pi',
             '0.8', '1.8', '2.8', '3.8', '4.8', '5.8', '6.8', '7.8', '8.8', '9.8',
             '-0.8', '-1.8', '-2.8', '-3.8', '-4.8', '-5.8', '-6.8', '-7.8', '-8.8', '-9.8',
+            '8.077935669463161e+152'
         ]
         for number in numbers:
             self.assertEqual(self.input_handler.is_number(number),

@@ -42,7 +42,7 @@ class VariableHandler:
                 return variable
         return None
 
-    def get_variable_buttons_list(self, buttons_in_row=3):
+    def get_variable_buttons_list(self, buttons_in_row=5):
         """Creates 2-dimensional list (rows, columns) of variables.
 
         Args:

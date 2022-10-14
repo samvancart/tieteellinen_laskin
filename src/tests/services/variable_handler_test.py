@@ -34,13 +34,13 @@ class TestVariableHandler(unittest.TestCase):
     def test_get_variable_buttons_list(self):
         self.variable_handler.create_variable('var=1')
         self.variable_handler.create_variable('var=2')
-        self.assertEqual(self.variable_handler.get_variable_buttons_list(),
+        self.assertEqual(self.variable_handler.get_variable_buttons_list(3),
                          [[{'name': 'var_1', 'value': '1', 'id': 1},
                            {'name': 'var_2', 'value': '2', 'id': 2}]
                           ])
         self.variable_handler.create_variable('var=3')
         self.variable_handler.create_variable('var=4')
-        self.assertEqual(self.variable_handler.get_variable_buttons_list(),
+        self.assertEqual(self.variable_handler.get_variable_buttons_list(3),
                          [[{'name': 'var_1', 'value': '1', 'id': 1},
                            {'name': 'var_2', 'value': '2', 'id': 2},
                            {'name': 'var_3', 'value': '3', 'id': 3}],
@@ -50,7 +50,7 @@ class TestVariableHandler(unittest.TestCase):
         self.variable_handler.create_variable('var=1')
         self.variable_handler.create_variable('var=2')
         self.variable_handler.create_variable('var=3')
-        self.assertEqual(self.variable_handler.get_variable_buttons_list(),
+        self.assertEqual(self.variable_handler.get_variable_buttons_list(3),
                          [[{'name': 'var_1', 'value': '1', 'id': 1},
                            {'name': 'var_2', 'value': '2', 'id': 2},
                            {'name': 'var_3', 'value': '3', 'id': 3}]])

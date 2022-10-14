@@ -21,6 +21,8 @@ class UI:
         self.frame_top_left = self.create_frame()
         self.frame_top_right = self.create_frame()
         self.entry = self.create_entry(self.frame_top_left)
+        self.style = ttk.Style()
+        self.style.theme_use('alt')
 
         self.calculator = Calculator()
         self.rpn = Rpn()
@@ -113,8 +115,9 @@ class UI:
     def start(self):
         # Create start layout
         self.frame_top_left.grid(
-            column=0, row=0, columnspan=2, rowspan=2, sticky=tk.W)
-        self.frame_top_right.grid(column=2, row=0, columnspan=2, rowspan=2)
+            column=0, row=0, columnspan=3, rowspan=2, sticky=tk.W)
+        self.frame_top_right.grid(
+            column=2, row=0, columnspan=2, rowspan=2, sticky='news')
         self.frame_bottom.grid(column=0, row=2, columnspan=4,
                                rowspan=4, sticky=tk.W)
 
@@ -136,10 +139,15 @@ class UI:
         return frame
 
     def create_entry(self, frame):
-        entry = ttk.Entry(master=frame, width=25, font=('Helvetica', 30))
+        entry = ttk.Entry(master=frame, width=35, font=('Helvetica', 30))
         entry.grid(padx=10, pady=10)
         entry.bind("<Key>", lambda event: 'break')
         return entry
+
+    def get_button_style(self, text):
+        if text == '=':
+            return 'equals.TButton'
+        return 'default.TButton'
 
     def default_buttons_to_grid(self, entry, frame, buttons):
         style = ttk.Style()
@@ -148,12 +156,27 @@ class UI:
                 buttons = ttk.Button(
                     frame,
                     text=cell,
-                    style='default.TButton',
-                    padding=30,
+                    style=self.get_button_style(cell),
+                    padding=25,
                     command=lambda value=cell, entry=entry:
                     self.default_button_click(value, entry)
                 )
-                style.configure('default.TButton', font=('Helvetica', 14))
+
+                style.configure(
+                    'default.TButton', font=('Helvetica', 20),
+                    background='#cdcfd1',
+                    foreground='black',
+                )
+                style.configure(
+                    'equals.TButton', font=('Helvetica', 20),
+                    background='#3281db',
+                    foreground='white',
+                )
+                style.map(
+                    'equals.TButton',
+                    foreground=[('active', 'white')],
+                    background=[('active', '#6c9cd4')]
+                )
                 buttons.grid(row=row_index+3, column=cell_index)
 
     def variable_buttons_to_grid(self, entry, frame, buttons):
@@ -168,5 +191,9 @@ class UI:
                     command=lambda value=cell['value'], entry=entry:
                     self.variable_button_click(value, entry)
                 )
-                style.configure('var.TButton', font=('Helvetica', 14))
+                style.configure(
+                    'var.TButton', font=('Helvetica', 14),
+                    background='#cdcfd1',
+                    foreground='black',
+                )
                 buttons.grid(row=row_index+3, column=cell_index)

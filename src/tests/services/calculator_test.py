@@ -140,6 +140,15 @@ class TestCalculator(unittest.TestCase):
         self.assertEqual(self.calculator.calculate(''),
                          ['error'])
 
+        # large numbers (scientific notation e.g. 8.077935669463161e+152)
+        number = float(50**90)
+        self.assertEqual(self.calculator.calculate('50^90'),
+                         str(number))
+        self.assertEqual(self.calculator.calculate(str(number) + '*3'),
+                         str(number*3))
+        self.assertEqual(self.calculator.calculate(str(number) + '^3'),
+                         'error')
+
     def test_handle_operator(self):
         self.assertEqual(self.calculator.handle_operator(['3', '4', '2'], '*'),
                          ['3', '8.0'])
