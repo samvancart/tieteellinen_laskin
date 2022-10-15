@@ -3,20 +3,21 @@ import re
 
 class InputHandler:
     """Class to validate and handle input."""
+
     def __init__(self):
-        self.numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'pi',
+        self.numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'pi', '-e'
                         '-0', '-1', '-2', '-3', '-4', '-5', '-6', '-7', '-8', '-9', '-pi', 'e']
 
         self.operator_regex = r"(?<!e)[-+*/^]+"
         self.symbol_regex = r"[(),]"
-        self.number_regex = r"[\d]*[\.]\d+(e\+)*\d*|\d+|pi+"
+        self.number_regex = r"[\d]*[\.]\d*(e[+-])*\d*|\d+(e[+-])*\d*|pi|(e[+-])\d+"
         self.function_regex = r"sin+|cos+|tan+|sqrt+|min+|max+"
 
-        self.minuses_and_pluses_in_front_of_number_regex = r"^[+-]+[-+|+-]*\d*(pi)*[\.]?[\d]*"
+        self.minuses_and_pluses_in_front_of_number_regex = \
+            r"^[+-]+[-+|+-]*\d*(pi)*(e[+-])*[\.]?[\d]*(e[+-])*\d*"
         self.minuses_and_pluses_in_front_of_function_regex = r"^[+-]+[-+|+-]*(sqrt|sin|tan|cos)"
         self.minus_or_plus_after_parenthesis_or_operator_regex = \
             r"(?<=[\(\^\*\/])[+]*[-]+[-+|+-]*\d+[\.]?[\d]*|(?<=[\(\^\*\/])[+]*[-]+[-+|+-]*(pi)+"
-
 
     def get_regex_list(self):
         """Input validation.
@@ -180,7 +181,7 @@ class InputHandler:
         return trimmed_list
 
     def get_position(self, str_item):
-        """Gets the position of the last operator token.
+        """Gets the position of the last operator token while ignoring token 'e'.
 
         Args:
             str_item: The string to process.
@@ -188,7 +189,12 @@ class InputHandler:
         Returns:
             Int, index + 1 of last operator token.
         """
-        for index, char in reversed(list(enumerate(str_item))):
+        new_str_item = str_item
+        for index, char in (list(enumerate(str_item))):
+            if char in 'e':
+                new_str_item = str_item[0:index+1]
+                break
+        for index, char in reversed(list(enumerate(new_str_item))):
             if char in ('-', '+'):
                 return index+1
         return 1

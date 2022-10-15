@@ -11,6 +11,8 @@ class TestInputHandler(unittest.TestCase):
                          2)
         self.assertEqual(self.input_handler.get_position('3'),
                          1)
+        self.assertEqual(self.input_handler.get_position('-1e+3'),
+                         1)             
 
     def test_str_input_to_list(self):
         self.assertEqual(self.input_handler.str_input_to_list('3+4'),

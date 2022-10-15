@@ -129,6 +129,10 @@ class TestCalculator(unittest.TestCase):
                          '8.0')
         self.assertEqual(self.calculator.calculate('6.3*sqrt(4.5)'),
                          '13.364318164425747')
+        self.assertEqual(self.calculator.calculate('-9e-3*8'),
+                         str(float(-9e-3*8)))
+        self.assertEqual(self.calculator.calculate('9e-31^2'),
+                         str(float(9e-31**2)))
         self.assertEqual(self.calculator.calculate('sqrt4'),
                          ['error'])
         self.assertEqual(self.calculator.calculate('4sqrt('),
@@ -147,6 +151,23 @@ class TestCalculator(unittest.TestCase):
         self.assertEqual(self.calculator.calculate(str(number) + '*3'),
                          str(number*3))
         self.assertEqual(self.calculator.calculate(str(number) + '^3'),
+                         'error')
+        self.assertEqual(self.calculator.calculate('-1e+3'),
+                         str(float(-1e+3)))
+        self.assertEqual(self.calculator.calculate('-1e-3'),
+                         str(float(-1e-3)))
+        self.assertEqual(self.calculator.calculate('+1e+3'),
+                         str(float(1e+3)))
+        self.assertEqual(self.calculator.calculate('+1e-3'),
+                         str(float(1e-3)))
+
+        self.assertEqual(self.calculator.calculate('-10e+3'),
+                         str(float(-10e+3)))
+        self.assertEqual(self.calculator.calculate('-1e-30'),
+                         str(float(-1e-30)))
+        self.assertEqual(self.calculator.calculate('+--1e+3'),
+                         str(float(1e+3)))
+        self.assertEqual(self.calculator.calculate('1e--30'),
                          'error')
 
     def test_handle_operator(self):

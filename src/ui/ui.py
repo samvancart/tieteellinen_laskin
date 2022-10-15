@@ -126,7 +126,7 @@ class UI:
 
     def get_default_buttons_list(self):
         return [['7', '8', '9', 'DEL', 'AC', '(', ')'], ['4', '5', '6', '*', '/', 'sin', 'sqrt'],
-                ['1', '2', '3', '+', '-', 'tan', 'var'], ['0', '.', 'pi', '^', '=', 'cos']]
+                ['1', '2', '3', '+', '-', 'tan', 'var'], ['0', '.', 'pi', '^', '=', 'cos', 'e']]
 
     def get_variable_buttons_list(self):
         return self.variable_handler.get_variable_buttons_list()
