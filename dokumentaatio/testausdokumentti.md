@@ -6,5 +6,11 @@ Testit suoritetaan *pytest*-kirjastolla.
 Testattu.
 ### InputHandler-luokka
 Testattu.
+### Variable-luokka
+Testattu.
+### VariableHandler-luokka
+Testattu.
+### InputStack-luokka
+Testattu.
 ### Testikattavuus
 ![](./kuvat/testikattavuus.png)
