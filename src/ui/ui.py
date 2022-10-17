@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import Tk, ttk, END
+from tkinter import ttk, END
 
 from services.calculator import Calculator
 from services.input_stack import InputStack
@@ -21,6 +21,7 @@ class UI:
         self.frame_top_left = self.create_frame()
         self.frame_top_right = self.create_frame()
         self.entry = self.create_entry(self.frame_top_left)
+        self.label = self.create_label(self.frame_top_left)
         self.style = ttk.Style()
         self.style.theme_use('alt')
 
@@ -91,6 +92,7 @@ class UI:
         result = self.calculator.calculate(str_input)
         self.clear_entry(entry)
         self.input_stack.add_to_input_stack(result)
+        self.label.config(text=str_input + ' = ')
         entry.insert(0, result)
 
     def handle_var_clicked(self):
@@ -143,6 +145,15 @@ class UI:
         entry.grid(padx=10, pady=10)
         entry.bind("<Key>", lambda event: 'break')
         return entry
+
+    def create_label(self, frame):
+        label = ttk.Label(
+            master=frame,
+            font=("Helvetica", 14),
+            width=70
+        )
+        label.grid(padx=10, pady=10)
+        return label
 
     def get_button_style(self, text):
         if text == '=':
