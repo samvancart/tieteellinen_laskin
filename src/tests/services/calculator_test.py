@@ -1,5 +1,6 @@
 import unittest
 from services.calculator import Calculator
+import math
 
 
 class TestCalculator(unittest.TestCase):
@@ -36,6 +37,47 @@ class TestCalculator(unittest.TestCase):
                          '0.9945218953682733')
         self.assertEqual(self.calculator.calculate('-cos(6)'),
                          '-0.9945218953682733')
+        self.assertEqual(self.calculator.calculate('4.'),
+                         ['error'])
+        self.assertEqual(self.calculator.calculate('45.5+9.'),
+                         ['error'])
+        self.assertEqual(self.calculator.calculate('-.4'),
+                         '-0.4')
+        self.assertEqual(self.calculator.calculate('-4.+3'),
+                         ['error'])
+        self.assertEqual(self.calculator.calculate('4.-3'),
+                         ['error'])
+        self.assertEqual(self.calculator.calculate('4.-+3'),
+                         ['error'])
+        self.assertEqual(self.calculator.calculate('4.---3'),
+                         ['error'])
+        self.assertEqual(self.calculator.calculate('4pi'),
+                         ['error'])
+        self.assertEqual(self.calculator.calculate('-4pi'),
+                         ['error'])
+        self.assertEqual(self.calculator.calculate('pi5'),
+                         ['error'])
+        self.assertEqual(self.calculator.calculate('pi.'),
+                         ['error'])
+        self.assertEqual(self.calculator.calculate('.pi'),
+                         ['error'])
+        self.assertEqual(self.calculator.calculate('.-pi'),
+                         ['error'])
+        self.assertEqual(self.calculator.calculate('.+pi'),
+                         ['error'])
+        self.assertEqual(self.calculator.calculate('.*5'),
+                         ['error'])
+        self.assertEqual(self.calculator.calculate('5./5'),
+                         ['error'])
+        self.assertEqual(self.calculator.calculate('15.^7'),
+                         ['error'])
+        self.assertEqual(self.calculator.calculate('15.sin(6)'),
+                         ['error'])
+        self.assertEqual(self.calculator.calculate('15.-sqrt(6)'),
+                         ['error'])
+        self.assertEqual(self.calculator.calculate('1.+tan(6)'),
+                         ['error'])
+
         # addition
         self.assertEqual(self.calculator.calculate('3+4'),
                          '7.0')
@@ -167,8 +209,25 @@ class TestCalculator(unittest.TestCase):
                          str(float(-1e-30)))
         self.assertEqual(self.calculator.calculate('+--1e+3'),
                          str(float(1e+3)))
+
         self.assertEqual(self.calculator.calculate('1e--30'),
                          'error')
+        self.assertEqual(self.calculator.calculate('e+5'),
+                         'error')
+        self.assertEqual(self.calculator.calculate('ee+5'),
+                         ['error'])
+        self.assertEqual(self.calculator.calculate('1ee+5'),
+                         ['error'])
+        self.assertEqual(self.calculator.calculate('1e+5.2'),
+                         ['error'])
+        self.assertEqual(self.calculator.calculate('1e+sin(2)'),
+                         ['error'])
+        self.assertEqual(self.calculator.calculate('1e+pi'),
+                         ['error'])
+        self.assertEqual(self.calculator.calculate('2e+5-sin(4)'),
+                         str(float(2e+5-math.sin(math.radians(4)))))
+        self.assertEqual(self.calculator.calculate('2e-5*cos(4)'),
+                         str(float(2e-5*math.cos(math.radians(4)))))
 
     def test_handle_operator(self):
         self.assertEqual(self.calculator.handle_operator(['3', '4', '2'], '*'),
