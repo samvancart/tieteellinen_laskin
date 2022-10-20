@@ -20,13 +20,14 @@ class InputHandler:
             r"(?<=[\(\^\*\/])[+]*[-]+[-+|+-]*\d+[\.]?[\d]*|(?<=[\(\^\*\/])[+]*[-]+[-+|+-]*(pi)+"
 
     def get_operator_regex(self):
-        no_operator_after_right_parenthesis = r"[\)]+\d+"
+        no_operator_after_right_parenthesis = r"[)]+\d+|[)]+sqrt|[)]+sin|[)]+cos|[)]+tan|[)]+pi"
         no_operator_before_left_parenthesis = r"(\d+|\)+)\(+"
         no_operator_before_function = r"(\d+|pi)(sqrt|sin|tan|cos)"
         no_parenthesis_after_function = r"(sqrt|sin|tan|cos)[^\(]"
         two_operators = r"[\+\-\*\/\^]+[\*\/\^]]*"
-        no_number_after_operator = r"\d+[-+*/^]+$"
+        no_number_after_operator = r"[-+*/^]+$"
         nothing_before_operator = r"^[*/^]"
+        consecutive_pi = r"(pi)(pi)+"
 
         return [no_operator_after_right_parenthesis,
                 no_operator_before_left_parenthesis,
@@ -34,7 +35,8 @@ class InputHandler:
                 no_parenthesis_after_function,
                 no_operator_before_function,
                 no_number_after_operator,
-                nothing_before_operator
+                nothing_before_operator,
+                consecutive_pi
                 ]
 
     def get_decimal_point_regex(self):

@@ -92,7 +92,8 @@ class UI:
         result = self.calculator.calculate(str_input)
         self.clear_entry(entry)
         self.input_stack.add_to_input_stack(result)
-        self.label.config(text=str_input + ' = ')
+        result_as_str = self.get_error_as_str(result)
+        self.label.config(text=str_input + ' = ' + result_as_str)
         entry.insert(0, result)
 
     def handle_var_clicked(self):
@@ -113,6 +114,11 @@ class UI:
 
     def clear_entry(self, entry):
         entry.delete(0, END)
+
+    def get_error_as_str(self, value):
+        if not isinstance(value, str):
+            return 'error'
+        return value
 
     def start(self):
         # Create start layout

@@ -83,6 +83,20 @@ class TestCalculator(unittest.TestCase):
                          ['error'])
         self.assertEqual(self.calculator.calculate('^sin(3)'),
                          ['error'])
+        self.assertEqual(self.calculator.calculate('3*'),
+                         ['error'])
+        self.assertEqual(self.calculator.calculate('-pi/'),
+                         ['error'])
+        self.assertEqual(self.calculator.calculate('sin(3)^'),
+                         ['error'])
+        self.assertEqual(self.calculator.calculate('sin(3)sin(6)'),
+                         ['error'])
+        self.assertEqual(self.calculator.calculate('sin(3)pi'),
+                         ['error'])
+        self.assertEqual(self.calculator.calculate('pipi'),
+                         ['error'])
+        self.assertEqual(self.calculator.calculate('cos(pipi)'),
+                         ['error'])
 
         # addition
         self.assertEqual(self.calculator.calculate('3+4'),
