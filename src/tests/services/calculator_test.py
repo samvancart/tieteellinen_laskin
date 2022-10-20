@@ -103,6 +103,12 @@ class TestCalculator(unittest.TestCase):
                          ['error'])
         self.assertEqual(self.calculator.calculate('epi'),
                          ['error'])
+        self.assertEqual(self.calculator.calculate('sqrt(2).'),
+                         ['error'])
+        self.assertEqual(self.calculator.calculate('.tan(5)'),
+                         ['error'])
+        self.assertEqual(self.calculator.calculate('cos(4).tan(5)'),
+                         ['error'])
 
         # addition
         self.assertEqual(self.calculator.calculate('3+4'),

@@ -21,7 +21,7 @@ class InputHandler:
 
     def get_operator_regex(self):
         no_operator_after_right_parenthesis = \
-            r"[)]+\d+|[)]+sqrt|[)]+sin|[)]+cos|[)]+tan|[)]+pi|[)]+e"
+            r"[)]+\d+|[)]+sqrt|[)]+sin|[)]+cos|[)]+tan|[)]+pi|[)]+e|[)]+\."
         no_operator_before_left_parenthesis = r"(\d+|\)+)\(+"
         no_operator_before_function = r"(\d+|pi)(sqrt|sin|tan|cos)"
         no_parenthesis_after_function = r"(sqrt|sin|tan|cos)[^\(]"
