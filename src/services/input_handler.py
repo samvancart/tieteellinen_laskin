@@ -26,6 +26,7 @@ class InputHandler:
         no_parenthesis_after_function = r"(sqrt|sin|tan|cos)[^\(]"
         two_operators = r"[\+\-\*\/\^]+[\*\/\^]]*"
         no_number_after_operator = r"\d+[-+*/^]+$"
+        nothing_before_operator = r"^[*/^]"
 
         return [no_operator_after_right_parenthesis,
                 no_operator_before_left_parenthesis,
@@ -33,6 +34,7 @@ class InputHandler:
                 no_parenthesis_after_function,
                 no_operator_before_function,
                 no_number_after_operator,
+                nothing_before_operator
                 ]
 
     def get_decimal_point_regex(self):

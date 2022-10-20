@@ -77,6 +77,12 @@ class TestCalculator(unittest.TestCase):
                          ['error'])
         self.assertEqual(self.calculator.calculate('1.+tan(6)'),
                          ['error'])
+        self.assertEqual(self.calculator.calculate('*3'),
+                         ['error'])
+        self.assertEqual(self.calculator.calculate('/pi'),
+                         ['error'])
+        self.assertEqual(self.calculator.calculate('^sin(3)'),
+                         ['error'])
 
         # addition
         self.assertEqual(self.calculator.calculate('3+4'),
