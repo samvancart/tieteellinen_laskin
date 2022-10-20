@@ -16,6 +16,9 @@
 [viikko_5](https://github.com/samvancart/tieteellinen_laskin/blob/main/viikkoraportit/viikko_5.md)  
 [viikko_6](https://github.com/samvancart/tieteellinen_laskin/blob/main/viikkoraportit/viikko_6.md)  
 ## Ohjelman asennus
+### Julkaisut
+Ohjelmasta on olemassa julkaisu Windowsille:  
+[Tieteellinen laskin (Windows)](https://github.com/samvancart/tieteellinen_laskin/releases)
 ### Projektin kloonaaminen
 Avaa komentorivi (Windowsilla Git Bash). Luo projektille hakemisto tietokoneellesi ja kloonaa projekti hakemistoon kommennolla  
 `git clone https://github.com/samvancart/tieteellinen_laskin`  
