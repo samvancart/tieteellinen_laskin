@@ -20,7 +20,8 @@ class InputHandler:
             r"(?<=[\(\^\*\/])[+]*[-]+[-+|+-]*\d+[\.]?[\d]*|(?<=[\(\^\*\/])[+]*[-]+[-+|+-]*(pi)+"
 
     def get_operator_regex(self):
-        no_operator_after_right_parenthesis = r"[)]+\d+|[)]+sqrt|[)]+sin|[)]+cos|[)]+tan|[)]+pi"
+        no_operator_after_right_parenthesis = \
+            r"[)]+\d+|[)]+sqrt|[)]+sin|[)]+cos|[)]+tan|[)]+pi|[)]+e"
         no_operator_before_left_parenthesis = r"(\d+|\)+)\(+"
         no_operator_before_function = r"(\d+|pi)(sqrt|sin|tan|cos)"
         no_parenthesis_after_function = r"(sqrt|sin|tan|cos)[^\(]"
@@ -59,11 +60,13 @@ class InputHandler:
         multiple_e = r"e+e"
         decimal_point_after_e = r"e[-+]\d*\.\d*"
         function_after_e = r"e[-+](sin)|e[-+](cos)e[-+](tan)|e[-+](sqrt)|e[-+](pi)"
+        e_after_pi = r"(pi)(e)+"
 
         return [no_plus_or_minus_after_e,
                 multiple_e,
                 decimal_point_after_e,
                 function_after_e,
+                e_after_pi,
                 ]
 
     def get_error_regex(self):

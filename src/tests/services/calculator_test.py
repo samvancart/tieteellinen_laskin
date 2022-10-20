@@ -97,6 +97,12 @@ class TestCalculator(unittest.TestCase):
                          ['error'])
         self.assertEqual(self.calculator.calculate('cos(pipi)'),
                          ['error'])
+        self.assertEqual(self.calculator.calculate('tan(5)e'),
+                         ['error'])
+        self.assertEqual(self.calculator.calculate('pie'),
+                         ['error'])
+        self.assertEqual(self.calculator.calculate('epi'),
+                         ['error'])
 
         # addition
         self.assertEqual(self.calculator.calculate('3+4'),
